@@ -1,0 +1,53 @@
+package parser
+
+type Engine Peg {
+}
+
+Query <- _? Components Tail END
+
+Tail <- (_ .*)?
+
+Components <- Element (_ Element)*
+
+Element <- ( TagString String / TagNum Number / TagWord Word )
+
+TagString <- NameString ':'
+
+TagNum <- (DataSource / Year) ':'
+
+TagWord <- ( Author / DataSource / Genus / NameString / ParentTaxon / Species /
+           SpeciesAny / SpeciesInfra / Uninomial / Year ) ':'
+
+Author <- 'a'
+
+DataSource <- 'ds'
+
+Genus <- 'g'
+
+NameString <- 'n'
+
+ParentTaxon <- 'tx'
+
+Species <- 'sp'
+
+SpeciesAny <- 'sp+'
+
+SpeciesInfra <- 'isp'
+
+Uninomial <- 'u'
+
+Year <- 'y'
+
+String <- Word (_ Word)* 
+
+Number <- [0-9]+
+
+Word <- [^: ]+ &(_ / END)
+
+_ <- MultipleSpace / SingleSpace
+
+MultipleSpace <- SingleSpace SingleSpace+
+
+SingleSpace <- ' '
+
+END <- !.
