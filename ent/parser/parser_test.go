@@ -9,9 +9,14 @@ import (
 
 func TestDebug(t *testing.T) {
 	q := "n:Bubo bubo sp:bubo ds:1"
-	p := &parser.Engine{Buffer: q}
-	p.Init()
-	err := p.Parse()
+	parser.New().Debug(q)
+}
+
+func TestParseQuery(t *testing.T) {
+	s := "n:Bubo bubo sp:bubo ds:1"
+	p := parser.New()
+	q, err := p.ParseQuery(s)
 	assert.Nil(t, err)
-	p.Debug(q)
+	assert.Equal(t, q.Species, "bubo")
+	assert.Equal(t, q.DataSource, 1)
 }

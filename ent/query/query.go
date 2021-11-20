@@ -8,4 +8,6 @@ type Query struct {
 	Species      string
 	Infraspecies string
 	Author       string
+	Year         int
+	Tail         string
 }

@@ -181,7 +181,7 @@ func (t *tokens32) Tokens() []token32 {
 	return t.tree
 }
 
-type Engine struct {
+type engine struct {
 	Buffer string
 	buffer []rune
 	rules  [25]func() bool
@@ -191,11 +191,11 @@ type Engine struct {
 	tokens32
 }
 
-func (p *Engine) Parse(rule ...int) error {
+func (p *engine) Parse(rule ...int) error {
 	return p.parse(rule...)
 }
 
-func (p *Engine) Reset() {
+func (p *engine) Reset() {
 	p.reset()
 }
 
@@ -231,7 +231,7 @@ search:
 }
 
 type parseError struct {
-	p   *Engine
+	p   *engine
 	max token32
 }
 
@@ -259,7 +259,7 @@ func (e *parseError) Error() string {
 	return err
 }
 
-func (p *Engine) PrintSyntaxTree() {
+func (p *engine) PrintSyntaxTree() {
 	if p.Pretty {
 		p.tokens32.PrettyPrintSyntaxTree(p.Buffer)
 	} else {
@@ -267,30 +267,30 @@ func (p *Engine) PrintSyntaxTree() {
 	}
 }
 
-func (p *Engine) WriteSyntaxTree(w io.Writer) {
+func (p *engine) WriteSyntaxTree(w io.Writer) {
 	p.tokens32.WriteSyntaxTree(w, p.Buffer)
 }
 
-func (p *Engine) SprintSyntaxTree() string {
+func (p *engine) SprintSyntaxTree() string {
 	var bldr strings.Builder
 	p.WriteSyntaxTree(&bldr)
 	return bldr.String()
 }
 
-func Pretty(pretty bool) func(*Engine) error {
-	return func(p *Engine) error {
+func Pretty(pretty bool) func(*engine) error {
+	return func(p *engine) error {
 		p.Pretty = pretty
 		return nil
 	}
 }
 
-func Size(size int) func(*Engine) error {
-	return func(p *Engine) error {
+func Size(size int) func(*engine) error {
+	return func(p *engine) error {
 		p.tokens32 = tokens32{tree: make([]token32, 0, size)}
 		return nil
 	}
 }
-func (p *Engine) Init(options ...func(*Engine) error) error {
+func (p *engine) Init(options ...func(*engine) error) error {
 	var (
 		max                  token32
 		position, tokenIndex uint32

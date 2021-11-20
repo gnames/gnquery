@@ -1,6 +1,6 @@
 package parser
 
-type Engine Peg {
+type engine Peg {
 }
 
 Query <- _? Components Tail END
@@ -15,8 +15,8 @@ TagString <- NameString ':'
 
 TagNum <- (DataSource / Year) ':'
 
-TagWord <- ( Author / DataSource / Genus / NameString / ParentTaxon / Species /
-           SpeciesAny / SpeciesInfra / Uninomial / Year ) ':'
+TagWord <- ( Author / Genus / ParentTaxon / Species / SpeciesAny /
+  SpeciesInfra / Uninomial ) ':'
 
 Author <- 'a'
 
