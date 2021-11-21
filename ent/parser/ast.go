@@ -35,6 +35,14 @@ func (p *parser) newComponents(n *node32) {
 	}
 }
 
+func (p *parser) setElement(tag Tag, val string) {
+	if _, ok := p.elements[tag]; ok {
+		warn := fmt.Sprintf("Tag '%s' appears more than once", tag.String())
+		p.warnings = append(p.warnings, warn)
+	}
+	p.elements[tag] = val
+}
+
 func (p *parser) newElement(n *node32) {
 	n = n.up
 	tagNode := n.up
@@ -44,23 +52,23 @@ func (p *parser) newElement(n *node32) {
 	fmt.Printf("TAG: %#v, %s\n", tagNode, p.nodeString(tagNode))
 	switch tagNode.pegRule {
 	case ruleAuthor:
-		p.elements[Author] = val
+		p.setElement(Author, val)
 	case ruleDataSource:
-		p.elements[DataSource] = val
+		p.setElement(DataSourceID, val)
 	case ruleGenus:
-		p.elements[Genus] = val
+		p.setElement(Genus, val)
 	case ruleNameString:
-		p.elements[NameString] = val
+		p.setElement(NameString, val)
 	case ruleParentTaxon:
-		p.elements[ParentTaxon] = val
+		p.setElement(ParentTaxon, val)
 	case ruleSpecies:
-		p.elements[Species] = val
+		p.setElement(Species, val)
 	case ruleSpeciesAny:
-		p.elements[SpeciesAny] = val
+		p.setElement(SpeciesAny, val)
 	case ruleSpeciesInfra:
-		p.elements[SpeciesInfra] = val
+		p.setElement(SpeciesInfra, val)
 	case ruleUninomial:
-		p.elements[Uninomial] = val
+		p.setElement(Uninomial, val)
 	}
 }
 
