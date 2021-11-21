@@ -99,5 +99,5 @@ func (p *parser) query() query.Query {
 		warn = fmt.Sprintf("Cannot convert Year from '%s'", yrStr)
 		res.Warnings = append(res.Warnings, warn)
 	}
-	return res
+	return res.ProcessName()
 }

@@ -49,7 +49,6 @@ func (p *parser) newElement(n *node32) {
 	valNode := n.next
 	val := p.nodeString(valNode)
 
-	fmt.Printf("TAG: %#v, %s\n", tagNode, p.nodeString(tagNode))
 	switch tagNode.pegRule {
 	case ruleAuthor:
 		p.setElement(Author, val)
