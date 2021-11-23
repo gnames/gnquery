@@ -17,7 +17,7 @@ func TestParseQuery(t *testing.T) {
 	p := parser.New()
 	q := p.ParseQuery(s)
 	assert.True(t, len(q.Warnings) > 0)
-	assert.Equal(t, q.Input, "n:Bubo bubo sp:caboom ds:1")
+	assert.Equal(t, q.Query, "n:Bubo bubo sp:caboom ds:1")
 	assert.Equal(t, q.NameString, "Bubo bubo")
 	assert.Equal(t, q.Species, "bubo")
 	assert.Equal(t, q.DataSourceID, 1)

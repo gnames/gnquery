@@ -5,7 +5,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/gnames/gnquery/ent/query"
+	"github.com/gnames/gnquery/ent/search"
 )
 
 type parser struct {
@@ -15,17 +15,19 @@ type parser struct {
 	*engine
 }
 
+// New creates a new Parser object for converting a query string into
+// search.Input object.
 func New() Parser {
 	res := parser{engine: &engine{}, elements: make(map[Tag]string)}
 	res.Init()
 	return &res
 }
 
-func (p *parser) ParseQuery(q string) query.Query {
+func (p *parser) ParseQuery(q string) search.Input {
 	var err error
 	p.Buffer = q
 	p.resetFull()
-	res := query.Query{}
+	res := search.Input{}
 	if err = p.Parse(); err != nil {
 		errMsg := fmt.Sprintf("Could not finish query parsing: %s", err)
 		res.Warnings = append(res.Warnings, errMsg)
@@ -52,10 +54,10 @@ func (p *parser) resetFull() {
 	p.reset()
 }
 
-func (p *parser) query() query.Query {
+func (p *parser) query() search.Input {
 	var warn string
-	res := query.Query{
-		Input:        p.Buffer,
+	res := search.Input{
+		Query:        p.Buffer,
 		Warnings:     p.warnings,
 		NameString:   p.elements[NameString],
 		Uninomial:    p.elements[Uninomial],

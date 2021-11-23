@@ -1,5 +1,10 @@
 package parser
 
+// Tag represents allowed tags in a search query. The tags in the query
+// should be followed by a colon character. Only NameString tag is allowed
+// to have more than one word.
+//
+// For example `g:Hom. sp:sapiens`, `n:Homo sapiens`
 type Tag int
 
 const (
@@ -28,6 +33,7 @@ var tagString = map[Tag]string{
 	SpeciesInfra: "isp",
 }
 
+// String returns a string representation of a tag.
 func (t Tag) String() string {
 	return tagString[t]
 }
