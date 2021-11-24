@@ -6,10 +6,11 @@ import (
 	"strconv"
 
 	"github.com/gnames/gnquery/ent/search"
+	"github.com/gnames/gnquery/ent/tag"
 )
 
 type parser struct {
-	elements map[Tag]string
+	elements map[tag.Tag]string
 	warnings []string
 	tail     string
 	*engine
@@ -18,7 +19,7 @@ type parser struct {
 // New creates a new Parser object for converting a query string into
 // search.Input object.
 func New() Parser {
-	res := parser{engine: &engine{}, elements: make(map[Tag]string)}
+	res := parser{engine: &engine{}, elements: make(map[tag.Tag]string)}
 	res.Init()
 	return &res
 }
@@ -49,7 +50,7 @@ func (p *parser) Debug(q string) {
 }
 
 func (p *parser) resetFull() {
-	p.elements = make(map[Tag]string)
+	p.elements = make(map[tag.Tag]string)
 	p.tail = ""
 	p.reset()
 }
@@ -59,14 +60,14 @@ func (p *parser) query() search.Input {
 	res := search.Input{
 		Query:        p.Buffer,
 		Warnings:     p.warnings,
-		NameString:   p.elements[NameString],
-		Uninomial:    p.elements[Uninomial],
-		Genus:        p.elements[Genus],
-		ParentTaxon:  p.elements[ParentTaxon],
-		Species:      p.elements[Species],
-		SpeciesAny:   p.elements[SpeciesAny],
-		SpeciesInfra: p.elements[SpeciesInfra],
-		Author:       p.elements[Author],
+		NameString:   p.elements[tag.NameString],
+		Uninomial:    p.elements[tag.Uninomial],
+		Genus:        p.elements[tag.Genus],
+		ParentTaxon:  p.elements[tag.ParentTaxon],
+		Species:      p.elements[tag.Species],
+		SpeciesAny:   p.elements[tag.SpeciesAny],
+		SpeciesInfra: p.elements[tag.SpeciesInfra],
+		Author:       p.elements[tag.Author],
 		Tail:         p.tail,
 	}
 
@@ -86,15 +87,15 @@ func (p *parser) query() search.Input {
 		res.Warnings = append(res.Warnings, "If name-string is given, uninomial, genus, species tags are ignored")
 	}
 
-	dsStr := p.elements[DataSourceID]
-	if ds, err := strconv.Atoi(p.elements[DataSourceID]); err == nil {
+	dsStr := p.elements[tag.DataSourceID]
+	if ds, err := strconv.Atoi(p.elements[tag.DataSourceID]); err == nil {
 		res.DataSourceID = ds
 	} else if dsStr != "" {
 		warn = fmt.Sprintf("Cannot convert dataSourceId from '%s'", dsStr)
 		res.Warnings = append(res.Warnings, warn)
 	}
 
-	yrStr := p.elements[Year]
+	yrStr := p.elements[tag.Year]
 	if yr, err := strconv.Atoi(yrStr); err == nil {
 		res.Year = yr
 	} else if yrStr != "" {

@@ -2,9 +2,11 @@ package search
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/gnames/gnparser"
 	"github.com/gnames/gnparser/ent/parsed"
+	"github.com/gnames/gnquery/ent/tag"
 )
 
 // Input contains data needed for creating a faceted search query by
@@ -117,4 +119,63 @@ func (q Input) ProcessName() Input {
 		}
 	}
 	return res
+}
+
+type qTags struct {
+	tag tag.Tag
+	val string
+}
+
+func (q Input) ToQuery() string {
+	if q.Query != "" {
+		return q.Query
+	}
+
+	qSlice := make([]string, 0, 9)
+
+	var ds string
+	if val := strconv.Itoa(q.DataSourceID); val != "0" {
+		ds = val
+	}
+
+	data1 := []qTags{
+		{tag.DataSourceID, ds},
+		{tag.ParentTaxon, q.ParentTaxon},
+		{tag.NameString, q.NameString},
+	}
+
+	qSlice = processTags(qSlice, data1)
+
+	if q.NameString != "" {
+		return strings.Join(qSlice, " ")
+	}
+
+	var yr string
+	if val := strconv.Itoa(q.Year); val != "0" {
+		yr = val
+	}
+
+	data2 := []qTags{
+		{tag.Uninomial, q.Uninomial},
+		{tag.Genus, q.Genus},
+		{tag.Species, q.Species},
+		{tag.SpeciesInfra, q.SpeciesInfra},
+		{tag.SpeciesAny, q.SpeciesAny},
+		{tag.Author, q.Author},
+		{tag.Year, yr},
+	}
+
+	qSlice = processTags(qSlice, data2)
+
+	return strings.Join(qSlice, " ")
+}
+
+func processTags(qSlice []string, data []qTags) []string {
+	for _, v := range data {
+		if v.val != "" {
+			str := v.tag.String() + ":" + v.val
+			qSlice = append(qSlice, str)
+		}
+	}
+	return qSlice
 }

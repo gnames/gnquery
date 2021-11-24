@@ -3,6 +3,8 @@ package parser
 import (
 	"fmt"
 	"strings"
+
+	"github.com/gnames/gnquery/ent/tag"
 )
 
 func (p *parser) walkAST() {
@@ -35,7 +37,7 @@ func (p *parser) newComponents(n *node32) {
 	}
 }
 
-func (p *parser) setElement(tag Tag, val string) {
+func (p *parser) setElement(tag tag.Tag, val string) {
 	if _, ok := p.elements[tag]; ok {
 		warn := fmt.Sprintf("Tag '%s' appears more than once", tag.String())
 		p.warnings = append(p.warnings, warn)
@@ -51,23 +53,25 @@ func (p *parser) newElement(n *node32) {
 
 	switch tagNode.pegRule {
 	case ruleAuthor:
-		p.setElement(Author, val)
+		p.setElement(tag.Author, val)
+	case ruleYear:
+		p.setElement(tag.Year, val)
 	case ruleDataSource:
-		p.setElement(DataSourceID, val)
+		p.setElement(tag.DataSourceID, val)
 	case ruleGenus:
-		p.setElement(Genus, val)
+		p.setElement(tag.Genus, val)
 	case ruleNameString:
-		p.setElement(NameString, val)
+		p.setElement(tag.NameString, val)
 	case ruleParentTaxon:
-		p.setElement(ParentTaxon, val)
+		p.setElement(tag.ParentTaxon, val)
 	case ruleSpecies:
-		p.setElement(Species, val)
+		p.setElement(tag.Species, val)
 	case ruleSpeciesAny:
-		p.setElement(SpeciesAny, val)
+		p.setElement(tag.SpeciesAny, val)
 	case ruleSpeciesInfra:
-		p.setElement(SpeciesInfra, val)
+		p.setElement(tag.SpeciesInfra, val)
 	case ruleUninomial:
-		p.setElement(Uninomial, val)
+		p.setElement(tag.Uninomial, val)
 	}
 }
 

@@ -1,18 +1,20 @@
 package gnquery
 
-import "github.com/gnames/gnquery/ent/search"
-import "github.com/gnames/gnquery/ent/parser"
+import (
+	"github.com/gnames/gnquery/ent/parser"
+	"github.com/gnames/gnquery/ent/search"
+)
 
-type gnquery struct{
-  parser.Parser
+type gnquery struct {
+	parser.Parser
 }
 
 // New returns GNquery object. GNquery provides conversion of a query into
 // search parameters.
 func New() GNquery {
 	return gnquery{
-    Parser: parser.New(),
-  }
+		Parser: parser.New(),
+	}
 }
 
 // Parse takes a query string and returns back a search.Input object that

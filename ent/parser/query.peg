@@ -15,14 +15,14 @@ TagString <- NameString ':'
 
 TagNum <- (DataSource / Year) ':'
 
-TagWord <- ( Author / Genus / ParentTaxon / Species / SpeciesAny /
-  SpeciesInfra / Uninomial ) ':'
+TagWord <- (Genus / ParentTaxon / SpeciesAny / Species /
+  SpeciesInfra / Uninomial / Author) ':'
 
-Author <- 'a'
+Author <- 'au' / 'a'
 
 DataSource <- 'ds'
 
-Genus <- 'g'
+Genus <- 'gen' / 'g'
 
 NameString <- 'n'
 
@@ -36,7 +36,7 @@ SpeciesInfra <- 'isp'
 
 Uninomial <- 'u'
 
-Year <- 'y'
+Year <- 'yr' / 'y'
 
 String <- Word (_ Word)* 
 

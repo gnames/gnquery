@@ -1,4 +1,4 @@
-package parser
+package tag
 
 // Tag represents allowed tags in a search query. The tags in the query
 // should be followed by a colon character. Only NameString tag is allowed

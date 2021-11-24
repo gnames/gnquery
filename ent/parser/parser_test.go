@@ -8,7 +8,7 @@ import (
 )
 
 func TestDebug(t *testing.T) {
-	q := "n:Bubo bubo sp:bubo ds:1"
+	q := "n:Bubo bubo gen:Bubo sp+:bubo ds:1 y:1888"
 	parser.New().Debug(q)
 }
 
