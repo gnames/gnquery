@@ -13,7 +13,6 @@ const (
 	ParentTaxon
 	Year
 	NameString
-	Uninomial
 	Genus
 	Species
 	SpeciesAny
@@ -26,7 +25,6 @@ var tagString = map[Tag]string{
 	ParentTaxon:  "tx",
 	Year:         "y",
 	NameString:   "n",
-	Uninomial:    "u",
 	Genus:        "g",
 	Species:      "sp",
 	SpeciesAny:   "sp+",

@@ -61,7 +61,6 @@ func (p *parser) query() search.Input {
 		Query:        p.Buffer,
 		Warnings:     p.warnings,
 		NameString:   p.elements[tag.NameString],
-		Uninomial:    p.elements[tag.Uninomial],
 		Genus:        p.elements[tag.Genus],
 		ParentTaxon:  p.elements[tag.ParentTaxon],
 		Species:      p.elements[tag.Species],
@@ -75,16 +74,8 @@ func (p *parser) query() search.Input {
 		res.Warnings = append(res.Warnings, "Unparsed tail")
 	}
 
-	if res.Uninomial != "" && res.Genus != "" {
-		res.Warnings = append(res.Warnings, "Genus and uninomial tags are incompatible")
-	}
-
-	if res.Uninomial != "" && (res.Species+res.SpeciesAny+res.SpeciesInfra != "") {
-		res.Warnings = append(res.Warnings, "Species and uninomial tags are incompatible")
-	}
-
-	if res.NameString != "" && (res.Uninomial+res.Genus+res.Species+res.SpeciesAny+res.SpeciesInfra != "") {
-		res.Warnings = append(res.Warnings, "If name-string is given, uninomial, genus, species tags are ignored")
+	if res.NameString != "" && (res.Genus+res.Species+res.SpeciesAny+res.SpeciesInfra != "") {
+		res.Warnings = append(res.Warnings, "If name-string is given, genus, species tags are ignored")
 	}
 
 	dsStr := p.elements[tag.DataSourceID]

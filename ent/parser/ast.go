@@ -70,8 +70,6 @@ func (p *parser) newElement(n *node32) {
 		p.setElement(tag.SpeciesAny, val)
 	case ruleSpeciesInfra:
 		p.setElement(tag.SpeciesInfra, val)
-	case ruleUninomial:
-		p.setElement(tag.Uninomial, val)
 	}
 }
 

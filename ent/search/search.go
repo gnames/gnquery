@@ -37,12 +37,9 @@ type Input struct {
 	//
 	// For example: `Aus bus cus A. 1888`.
 	//
-	// If NameString is given, all other inputs for uninomial, genus, species,
+	// If NameString is given, all other inputs for genus, species,
 	// authors, year will be ignored.
 	NameString string `json:"nameString,omitempty"`
-
-	// Uninomial field creates a faceted search filter by a uninomial name.
-	Uninomial string `json:"uninomial,omitempty"`
 
 	// Genus field creates a faceted search filter by a genus name. The name
 	// can be abbreviated up to one character following a period.
@@ -101,8 +98,6 @@ func (q Input) ProcessName() Input {
 	for _, v := range pRes.Words {
 		val := v.Normalized
 		switch v.Type {
-		case parsed.UninomialType:
-			res.Uninomial = val
 		case parsed.GenusType:
 			res.Genus = val
 		case parsed.SpEpithetType:
@@ -156,7 +151,6 @@ func (q Input) ToQuery() string {
 	}
 
 	data2 := []qTags{
-		{tag.Uninomial, q.Uninomial},
 		{tag.Genus, q.Genus},
 		{tag.Species, q.Species},
 		{tag.SpeciesInfra, q.SpeciesInfra},
