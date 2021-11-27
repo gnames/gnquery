@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 
 	"github.com/gnames/gnquery/ent/search"
 	"github.com/gnames/gnquery/ent/tag"
@@ -87,11 +88,35 @@ func (p *parser) query() search.Input {
 	}
 
 	yrStr := p.elements[tag.Year]
-	if yr, err := strconv.Atoi(yrStr); err == nil {
-		res.Year = yr
-	} else if yrStr != "" {
+	yr, yrRange := processYear(yrStr)
+
+	if yrStr != "" && yr == 0 && yrRange == nil {
 		warn = fmt.Sprintf("Cannot convert Year from '%s'", yrStr)
 		res.Warnings = append(res.Warnings, warn)
 	}
+
+	if yrRange != nil && yrRange.YearStart+yrRange.YearEnd == 0 {
+		warn = fmt.Sprintf("Cannot convert YearRange from '%s'", yrStr)
+		res.Warnings = append(res.Warnings, warn)
+	}
+
+	res.Year = yr
+	res.YearRange = yrRange
+
 	return res.ProcessName()
+}
+
+func processYear(val string) (int, *search.YearRange) {
+	var yr, yrStart, yrEnd int
+
+	yrs := strings.Split(val, "-")
+	if len(yrs) == 2 {
+		yrStart, _ = strconv.Atoi(yrs[0])
+		yrEnd, _ = strconv.Atoi(yrs[1])
+		yRange := &search.YearRange{YearStart: yrStart, YearEnd: yrEnd}
+		return yr, yRange
+	}
+
+	yr, _ = strconv.Atoi(val)
+	return yr, nil
 }

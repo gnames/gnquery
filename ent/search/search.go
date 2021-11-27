@@ -1,6 +1,7 @@
 package search
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -68,9 +69,29 @@ type Input struct {
 	// Year field creates a faceted search filter for a year.
 	Year int `json:"year,omitempty"`
 
+	// YearRange field creates a more flexible filter for year data.
+	//
+	// Example:
+	// 1990-1995: year >= 1990 && year =< 1995
+	// 1990-: year >= 1990
+	// -1995: year <= 1995
+	*YearRange `json:"yearRange,omitempty"`
+
 	// Tail field keeps a non-parsed pard of a query, in case if full parsing
 	// of query string did fail.
 	Tail string `json:"tail,omitempty"`
+}
+
+// YearRange field creates a more flexible filter for year data.
+//
+// Example:
+// 1990-1995: year >= 1990 && year =< 1995
+// 1990-: year >= 1990
+// -1995: year <= 1995
+type YearRange struct {
+	// YearStart is the smaller year of the range.
+	// YearEnd is the larger year of the range.
+	YearStart, YearEnd int
 }
 
 // ProcessName checks if NameString is given in the Input object.
@@ -107,10 +128,7 @@ func (q Input) ProcessName() Input {
 		case parsed.AuthorWordType:
 			res.Author = val
 		case parsed.YearType:
-			yr, err := strconv.Atoi(val)
-			if err == nil {
-				res.Year = yr
-			}
+			res.Year, _ = strconv.Atoi(val)
 		}
 	}
 	return res
@@ -145,9 +163,19 @@ func (q Input) ToQuery() string {
 		return strings.Join(qSlice, " ")
 	}
 
-	var yr string
+	var yr, yrStart, yrEnd string
 	if val := strconv.Itoa(q.Year); val != "0" {
 		yr = val
+	}
+
+	if q.YearRange != nil {
+		if q.YearStart > 0 {
+			yrStart = strconv.Itoa(q.YearStart)
+		}
+		if q.YearEnd > 0 {
+			yrEnd = strconv.Itoa(q.YearEnd)
+		}
+		yr = fmt.Sprintf("%s-%s", yrStart, yrEnd)
 	}
 
 	data2 := []qTags{
