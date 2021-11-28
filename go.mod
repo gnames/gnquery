@@ -3,7 +3,8 @@ module github.com/gnames/gnquery
 go 1.17
 
 require (
-	github.com/gnames/gnparser v1.5.5
+	github.com/gnames/gnlib v0.5.1
+	github.com/gnames/gnparser v1.5.7
 	github.com/pointlander/peg v1.0.1
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/tools v0.1.7
@@ -12,7 +13,6 @@ require (
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gnames/gnfmt v0.2.0 // indirect
-	github.com/gnames/gnlib v0.3.2 // indirect
 	github.com/gnames/gnuuid v0.1.1 // indirect
 	github.com/gnames/organizer v0.1.1 // indirect
 	github.com/gnames/tribool v0.1.1 // indirect
