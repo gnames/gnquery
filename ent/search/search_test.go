@@ -28,6 +28,11 @@ func TestToQuery(t *testing.T) {
 			"some query",
 		},
 		{
+			"with all res",
+			search.Input{DataSourceID: 5, NameString: "Bubo bubo", WithAllResults: true},
+			"ds:5 n:Bubo bubo all:true",
+		},
+		{
 			"with name string",
 			search.Input{DataSourceID: 5, NameString: "Bubo bubo", Author: "L."},
 			"ds:5 n:Bubo bubo",

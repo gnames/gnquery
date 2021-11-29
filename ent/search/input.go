@@ -161,6 +161,7 @@ func (q Input) ToQuery() string {
 		{tag.DataSourceID, ds},
 		{tag.ParentTaxon, q.ParentTaxon},
 		{tag.NameString, q.NameString},
+		{tag.AllResults, strconv.FormatBool(q.WithAllResults)},
 	}
 
 	qSlice = processTags(qSlice, data1)
@@ -200,7 +201,7 @@ func (q Input) ToQuery() string {
 
 func processTags(qSlice []string, data []qTags) []string {
 	for _, v := range data {
-		if v.val != "" {
+		if v.val != "" && v.val != "false" {
 			str := v.tag.String() + ":" + v.val
 			qSlice = append(qSlice, str)
 		}
