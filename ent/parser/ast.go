@@ -70,6 +70,8 @@ func (p *parser) newElement(n *node32) {
 		p.setElement(tag.SpeciesAny, val)
 	case ruleSpeciesInfra:
 		p.setElement(tag.SpeciesInfra, val)
+	case ruleAllResults:
+		p.setElement(tag.AllResults, val)
 	}
 }
 

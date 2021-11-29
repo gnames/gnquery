@@ -1,7 +1,6 @@
 package parser_test
 
 import (
-	"log"
 	"testing"
 
 	"github.com/gnames/gnquery/ent/parser"
@@ -9,7 +8,7 @@ import (
 )
 
 func TestDebug(t *testing.T) {
-	q := "n:Bubo bubo gen:Bubo sp+:bubo ds:1 y:-"
+	q := "n:Bubo bubo gen:Bubo sp+:bubo ds:1 all:t y:-"
 	parser.New().Debug(q)
 }
 
@@ -30,11 +29,16 @@ func TestYearRange(t *testing.T) {
 		warns  int
 		yst    int
 		yend   int
+		all    bool
 	}{
-		{"full range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000},
-		{"range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000},
-		{"greater", "g:B. sp:b. y:1888-", 0, 1888, 0},
-		{"less", "g:B. sp:b. y:-2000", 0, 0, 2000},
+		{"full range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, false},
+		{"range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, false},
+		{"greater", "g:B. sp:b. y:1888-", 0, 1888, 0, false},
+		{"less", "g:B. sp:b. y:-2000", 0, 0, 2000, false},
+		{"all", "g:B. sp:b. y:-2000 all:t", 0, 0, 2000, true},
+		// {"all2", "g:B. sp:b. y:-2000 all:true", 0, 0, 2000, true},
+		// {"best only", "g:B. sp:b. y:-2000 all:f", 0, 0, 2000, false},
+		// {"best only", "g:B. sp:b. y:-2000 all:false", 0, 0, 2000, false},
 	}
 
 	p := parser.New()
@@ -42,6 +46,7 @@ func TestYearRange(t *testing.T) {
 	for _, v := range tests {
 		res := p.ParseQuery(v.q)
 		assert.True(t, len(res.Warnings) == v.warns)
+		assert.Equal(t, res.WithAllResults, v.all)
 		assert.Equal(t, res.Year, 0)
 		assert.NotNil(t, res.YearRange)
 		assert.Equal(t, res.YearStart, v.yst)
@@ -51,6 +56,5 @@ func TestYearRange(t *testing.T) {
 	q := "g:B. sp:b. y:-"
 	res := p.ParseQuery(q)
 	assert.True(t, len(res.Warnings) > 0)
-	log.Printf("P: %#v", res)
 	assert.Nil(t, res.YearRange)
 }

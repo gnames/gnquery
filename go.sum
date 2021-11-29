@@ -92,8 +92,8 @@ github.com/gnames/gnfmt v0.1.0/go.mod h1:WG9c3CoiVrGc1SDsxLk7zjmv2B4UIzI00m4K5Kh
 github.com/gnames/gnfmt v0.2.0 h1:CjE1HxdqyTwufua5wMCdILWnCsCfRiHe5G4TgxR8aAI=
 github.com/gnames/gnfmt v0.2.0/go.mod h1:0Aog37s1ZNpmUwVQOf+lnx0SQq8r2EvfE/pLYGiJlJQ=
 github.com/gnames/gnlib v0.3.2/go.mod h1:IIo4lQ8hmW/pCmudLgwJ4KdoKWF6B4jFCdVcowG/evw=
-github.com/gnames/gnlib v0.5.1 h1:yEOHIPFXO5rPGerfU6msPMqKLkhbxr1gMgGN1NHD0Fw=
-github.com/gnames/gnlib v0.5.1/go.mod h1:DgK8NcrG2YhOS1Nx0cxt8+Gdwu1cw/abSZdhkQKjIH8=
+github.com/gnames/gnlib v0.5.3 h1:J9i3u3W9Gi4Ohr1G1EnvZO1aLOkRgwKX9Bqd+05x2EE=
+github.com/gnames/gnlib v0.5.3/go.mod h1:DgK8NcrG2YhOS1Nx0cxt8+Gdwu1cw/abSZdhkQKjIH8=
 github.com/gnames/gnparser v1.5.5/go.mod h1:prvrAYGrtT/LxN8ovG3LFojgjR7VDcao/cNWYjUyYw0=
 github.com/gnames/gnparser v1.5.7 h1:Spn1Zvm9FEpAGlV7L380x3DdCWmX8X3YGORC7jGDd0U=
 github.com/gnames/gnparser v1.5.7/go.mod h1:prvrAYGrtT/LxN8ovG3LFojgjR7VDcao/cNWYjUyYw0=

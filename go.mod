@@ -3,7 +3,7 @@ module github.com/gnames/gnquery
 go 1.17
 
 require (
-	github.com/gnames/gnlib v0.5.1
+	github.com/gnames/gnlib v0.5.3
 	github.com/gnames/gnparser v1.5.7
 	github.com/pointlander/peg v1.0.1
 	github.com/stretchr/testify v1.7.0

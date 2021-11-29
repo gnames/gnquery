@@ -59,16 +59,17 @@ func (p *parser) resetFull() {
 func (p *parser) query() search.Input {
 	var warn string
 	res := search.Input{
-		Query:        p.Buffer,
-		Warnings:     p.warnings,
-		NameString:   p.elements[tag.NameString],
-		Genus:        p.elements[tag.Genus],
-		ParentTaxon:  p.elements[tag.ParentTaxon],
-		Species:      p.elements[tag.Species],
-		SpeciesAny:   p.elements[tag.SpeciesAny],
-		SpeciesInfra: p.elements[tag.SpeciesInfra],
-		Author:       p.elements[tag.Author],
-		Tail:         p.tail,
+		Query:          p.Buffer,
+		Warnings:       p.warnings,
+		NameString:     p.elements[tag.NameString],
+		Genus:          p.elements[tag.Genus],
+		ParentTaxon:    p.elements[tag.ParentTaxon],
+		Species:        p.elements[tag.Species],
+		SpeciesAny:     p.elements[tag.SpeciesAny],
+		SpeciesInfra:   p.elements[tag.SpeciesInfra],
+		Author:         p.elements[tag.Author],
+		Tail:           p.tail,
+		WithAllResults: strings.HasPrefix(p.elements[tag.AllResults], "t"),
 	}
 
 	if res.Tail != "" {

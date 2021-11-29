@@ -8,7 +8,8 @@ package tag
 type Tag int
 
 const (
-	Author Tag = iota
+	AllResults Tag = iota
+	Author
 	DataSourceID
 	ParentTaxon
 	Year
@@ -20,6 +21,7 @@ const (
 )
 
 var tagString = map[Tag]string{
+	AllResults:   "all",
 	Author:       "au",
 	DataSourceID: "ds",
 	ParentTaxon:  "tx",
