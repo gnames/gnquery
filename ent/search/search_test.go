@@ -11,7 +11,7 @@ func TestProcessName(t *testing.T) {
 	inp := search.Input{NameString: "H. sapiens", Genus: "Pomatomus", Author: "L."}
 
 	inp = inp.ProcessName()
-	assert.Equal(t, inp.Author, "")
+	assert.Equal(t, inp.Author, "L.")
 	assert.Equal(t, inp.Genus, "H.")
 	assert.Equal(t, inp.Species, "sapiens")
 }

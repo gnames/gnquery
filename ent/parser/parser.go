@@ -77,7 +77,7 @@ func (p *parser) query() search.Input {
 	}
 
 	if res.NameString != "" && (res.Genus+res.Species+res.SpeciesAny+res.SpeciesInfra != "") {
-		res.Warnings = append(res.Warnings, "If name-string is given, genus, species tags are ignored")
+		res.Warnings = append(res.Warnings, "If name-string is given, genus, species, author tags might be overwritten.")
 	}
 
 	dsStr := p.elements[tag.DataSourceID]

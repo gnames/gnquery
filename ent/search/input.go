@@ -103,41 +103,36 @@ type YearRange struct {
 // ProcessName checks if NameString is given in the Input object.
 // If yes, it cleans up redundant fields and populates data from a parsed
 // name-string.
-func (q Input) ProcessName() Input {
-	if q.NameString == "" {
-		return q
-	}
-
-	res := Input{Query: q.Query, NameString: q.NameString,
-		Tail: q.Tail, Warnings: q.Warnings,
-		DataSourceID: q.DataSourceID, ParentTaxon: q.ParentTaxon,
+func (inp Input) ProcessName() Input {
+	if inp.NameString == "" {
+		return inp
 	}
 
 	cfg := gnparser.NewConfig(gnparser.OptWithDetails(true))
 	p := gnparser.New(cfg)
-	pRes := p.ParseName(q.NameString)
+	pRes := p.ParseName(inp.NameString)
 
 	if !pRes.Parsed {
-		res.Warnings = append(res.Warnings, "Cannot parse '%s'", q.NameString)
-		return res
+		inp.Warnings = append(inp.Warnings, "Cannot parse '%s'", inp.NameString)
+		return inp
 	}
 
 	for _, v := range pRes.Words {
 		val := v.Normalized
 		switch v.Type {
 		case parsed.GenusType:
-			res.Genus = val
+			inp.Genus = val
 		case parsed.SpEpithetType:
-			res.Species = val
+			inp.Species = val
 		case parsed.InfraspEpithetType:
-			res.SpeciesInfra = val
+			inp.SpeciesInfra = val
 		case parsed.AuthorWordType:
-			res.Author = val
+			inp.Author = val
 		case parsed.YearType:
-			res.Year, _ = strconv.Atoi(val)
+			inp.Year, _ = strconv.Atoi(val)
 		}
 	}
-	return res
+	return inp
 }
 
 type qTags struct {
@@ -145,52 +140,52 @@ type qTags struct {
 	val string
 }
 
-func (q Input) ToQuery() string {
-	if q.Query != "" {
-		return q.Query
+func (inp Input) ToQuery() string {
+	if inp.Query != "" {
+		return inp.Query
 	}
 
 	qSlice := make([]string, 0, 9)
 
 	var ds string
-	if val := strconv.Itoa(q.DataSourceID); val != "0" {
+	if val := strconv.Itoa(inp.DataSourceID); val != "0" {
 		ds = val
 	}
 
 	data1 := []qTags{
 		{tag.DataSourceID, ds},
-		{tag.ParentTaxon, q.ParentTaxon},
-		{tag.NameString, q.NameString},
-		{tag.AllResults, strconv.FormatBool(q.WithAllResults)},
+		{tag.ParentTaxon, inp.ParentTaxon},
+		{tag.NameString, inp.NameString},
+		{tag.AllResults, strconv.FormatBool(inp.WithAllResults)},
 	}
 
 	qSlice = processTags(qSlice, data1)
 
-	if q.NameString != "" {
+	if inp.NameString != "" {
 		return strings.Join(qSlice, " ")
 	}
 
 	var yr, yrStart, yrEnd string
-	if val := strconv.Itoa(q.Year); val != "0" {
+	if val := strconv.Itoa(inp.Year); val != "0" {
 		yr = val
 	}
 
-	if q.YearRange != nil {
-		if q.YearStart > 0 {
-			yrStart = strconv.Itoa(q.YearStart)
+	if inp.YearRange != nil {
+		if inp.YearStart > 0 {
+			yrStart = strconv.Itoa(inp.YearStart)
 		}
-		if q.YearEnd > 0 {
-			yrEnd = strconv.Itoa(q.YearEnd)
+		if inp.YearEnd > 0 {
+			yrEnd = strconv.Itoa(inp.YearEnd)
 		}
 		yr = fmt.Sprintf("%s-%s", yrStart, yrEnd)
 	}
 
 	data2 := []qTags{
-		{tag.Genus, q.Genus},
-		{tag.Species, q.Species},
-		{tag.SpeciesInfra, q.SpeciesInfra},
-		{tag.SpeciesAny, q.SpeciesAny},
-		{tag.Author, q.Author},
+		{tag.Genus, inp.Genus},
+		{tag.Species, inp.Species},
+		{tag.SpeciesInfra, inp.SpeciesInfra},
+		{tag.SpeciesAny, inp.SpeciesAny},
+		{tag.Author, inp.Author},
 		{tag.Year, yr},
 	}
 
