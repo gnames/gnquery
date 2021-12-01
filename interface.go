@@ -12,4 +12,9 @@ type GNquery interface {
   // Parse takes a query and returns back an Input object for performing
   // a faceted search in GNames.
 	Parse(q string) search.Input
+
+  // Process takes an search.Input, updates its fields if necessary
+  // (for example if there is a query or name fields) and returns
+  // this updated input.
+  Process(inp search.Input) search.Input
 }

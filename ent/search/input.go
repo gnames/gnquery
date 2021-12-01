@@ -16,7 +16,7 @@ type Input struct {
 	// Query field contains the query of the faceted search.
 	//
 	// Example: `g:Bubo sp:bubo a:Linn. yr:1700-1800`
-	Query string `json:"input,omitempty"`
+	Query string `json:"query,omitempty"`
 
 	// WithAllResults field indicates if all found data should be provided by the
 	// output, or only the "best result".
