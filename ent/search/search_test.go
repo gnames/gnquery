@@ -40,7 +40,7 @@ func TestToQuery(t *testing.T) {
 		{
 			"data1",
 			search.Input{DataSourceID: 5, Genus: "Bubo", SpeciesAny: "bubo", Author: "L."},
-			"ds:5 g:Bubo sp+:bubo au:L.",
+			"ds:5 g:Bubo asp:bubo au:L.",
 		},
 		{
 			"data2",

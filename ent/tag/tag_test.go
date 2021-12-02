@@ -9,5 +9,5 @@ import (
 
 func TestTagString(t *testing.T) {
 	res := tag.SpeciesAny.String()
-	assert.Equal(t, res, "sp+")
+	assert.Equal(t, res, "asp")
 }

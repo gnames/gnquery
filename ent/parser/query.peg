@@ -37,7 +37,7 @@ ParentTaxon <- 'tx'
 
 Species <- 'sp'
 
-SpeciesAny <- 'sp+'
+SpeciesAny <- 'asp'
 
 SpeciesInfra <- 'isp'
 

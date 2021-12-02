@@ -29,7 +29,7 @@ var tagString = map[Tag]string{
 	NameString:   "n",
 	Genus:        "g",
 	Species:      "sp",
-	SpeciesAny:   "sp+",
+	SpeciesAny:   "asp",
 	SpeciesInfra: "isp",
 }
 

@@ -815,20 +815,20 @@ func (p *engine) Init(options ...func(*engine) error) error {
 			position, tokenIndex = position53, tokenIndex53
 			return false
 		},
-		/* 16 SpeciesAny <- <('s' 'p' '+')> */
+		/* 16 SpeciesAny <- <('a' 's' 'p')> */
 		func() bool {
 			position55, tokenIndex55 := position, tokenIndex
 			{
 				position56 := position
+				if buffer[position] != rune('a') {
+					goto l55
+				}
+				position++
 				if buffer[position] != rune('s') {
 					goto l55
 				}
 				position++
 				if buffer[position] != rune('p') {
-					goto l55
-				}
-				position++
-				if buffer[position] != rune('+') {
 					goto l55
 				}
 				position++

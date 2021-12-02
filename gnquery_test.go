@@ -41,7 +41,7 @@ func TestProcess(t *testing.T) {
 }
 
 func Example() {
-	q := "ds:2 tx:Aves g:Bubo sp+:bubo y:1758"
+	q := "ds:2 tx:Aves g:Bubo asp:bubo y:1758"
 	gnq := gnquery.New()
 	res := gnq.Parse(q)
 	fmt.Println(res.Query)
@@ -52,7 +52,7 @@ func Example() {
 	fmt.Println(res.Year)
 	fmt.Println(res.Tail)
 	// Output:
-	// ds:2 tx:Aves g:Bubo sp+:bubo y:1758
+	// ds:2 tx:Aves g:Bubo asp:bubo y:1758
 	// 2
 	// Aves
 	// Bubo
