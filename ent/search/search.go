@@ -4,11 +4,13 @@ import "github.com/gnames/gnlib/ent/verifier"
 
 type Output struct {
 	Meta  `json:"metadata"`
-	Names []Canonical `json:"results,omitempty"`
+	Names []Canonical `json:"names,omitempty"`
 }
 
 type Meta struct {
-	Input
+	Input    Input  `json:"input"`
+	NamesNum int    `json:"namesNumber"`
+	Error    string `json:"error,omitempty"`
 }
 
 type Canonical struct {
@@ -17,5 +19,5 @@ type Canonical struct {
 	Cardinality int                    `json:"cardinality,omitempty"`
 	MatchType   string                 `json:"matchType"`
 	BestResult  *verifier.ResultData   `json:"bestResult,omitempty"`
-	Results     []*verifier.ResultData `json:"preferredResults,omitempty"`
+	Results     []*verifier.ResultData `json:"results,omitempty"`
 }
