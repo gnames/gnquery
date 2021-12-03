@@ -8,7 +8,7 @@ import (
 )
 
 func TestDebug(t *testing.T) {
-	q := "n:Bubo bubo au:Linn. sp:caboom all:t ds:1"
+	q := "n:Bubo bubo au:Linn. sp:caboom all:t ds:1,2,3"
 	parser.New().Debug(q)
 }
 
@@ -17,9 +17,10 @@ func TestParseQuery(t *testing.T) {
 	p := parser.New()
 	q := p.ParseQuery(s)
 	assert.True(t, len(q.Warnings) > 0, "warn")
-	assert.Equal(t, q.Query, "n:Bubo bubo au:Linn. sp:caboom all:t ds:1", "query")
+	assert.Equal(t, q.Query, "n:Bubo bubo au:Linn. sp:caboom all:t ds:1,2", "query")
 	assert.Equal(t, q.NameString, "Bubo bubo", "n")
 	assert.Equal(t, q.Species, "bubo", "sp")
+	assert.Equal(t, q.ParentTaxon, "")
 	assert.Equal(t, q.DataSourceIDs, []int{1, 2}, "ds")
 	assert.Equal(t, q.WithAllResults, true, "all")
 	assert.Equal(t, q.Author, "Linn.", "au")

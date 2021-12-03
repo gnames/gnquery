@@ -146,17 +146,8 @@ func (inp Input) ToQuery() string {
 
 	qSlice := make([]string, 0, 9)
 
-	var ds string
-	if len(inp.DataSourceIDs) > 0 {
-		ints := make([]string, len(inp.DataSourceIDs))
-		for i := range inp.DataSourceIDs {
-			ints[i] = strconv.Itoa(inp.DataSourceIDs[i])
-		}
-		ds = strings.Join(ints, ",")
-	}
-
 	data1 := []qTags{
-		{tag.DataSourceIDs, ds},
+		{tag.DataSourceIDs, inp.dsToString()},
 		{tag.ParentTaxon, inp.ParentTaxon},
 		{tag.NameString, inp.NameString},
 		{tag.AllResults, strconv.FormatBool(inp.WithAllResults)},
@@ -205,4 +196,20 @@ func processTags(qSlice []string, data []qTags) []string {
 		}
 	}
 	return qSlice
+}
+
+func (inp Input) dsToString() string {
+	if len(inp.DataSourceIDs) == 0 {
+		return ""
+	}
+
+	if inp.ParentTaxon != "" {
+		return strconv.Itoa(inp.DataSourceIDs[0])
+	}
+
+	res := make([]string, len(inp.DataSourceIDs))
+	for i := range inp.DataSourceIDs {
+		res[i] = strconv.Itoa(inp.DataSourceIDs[i])
+	}
+	return strings.Join(res, ",")
 }

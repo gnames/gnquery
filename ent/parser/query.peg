@@ -9,7 +9,7 @@ Tail <- (_ .*)?
 
 Components <- Element (_ Element)*
 
-Element <- TagString String / TagDS Number (',' Number)* /
+Element <- TagString String / TagDS Numbers /
   TagYear (YearRange / YearNum) / TagAllResults Bool / TagWord Word
 
 TagAllResults <- AllResults ':'
@@ -48,6 +48,8 @@ String <- Word (_ Word)*
 YearRange <- '-' YearNum / YearNum '-' YearNum?
 
 YearNum <- [12] [0789] Digits Digits
+
+Numbers <- Number (',' Number)*
 
 Number <- [0-9]+
 
