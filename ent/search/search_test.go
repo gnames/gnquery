@@ -24,22 +24,22 @@ func TestToQuery(t *testing.T) {
 	}{
 		{
 			"with query",
-			search.Input{Query: "some query", DataSourceID: 5, NameString: "Bubo bubo"},
+			search.Input{Query: "some query", DataSourceIDs: []int{5}, NameString: "Bubo bubo"},
 			"some query",
 		},
 		{
 			"with all res",
-			search.Input{DataSourceID: 5, NameString: "Bubo bubo", WithAllResults: true},
+			search.Input{DataSourceIDs: []int{5}, NameString: "Bubo bubo", WithAllResults: true},
 			"ds:5 n:Bubo bubo all:true",
 		},
 		{
 			"with name string",
-			search.Input{DataSourceID: 5, NameString: "Bubo bubo", Author: "L."},
+			search.Input{DataSourceIDs: []int{5}, NameString: "Bubo bubo", Author: "L."},
 			"ds:5 n:Bubo bubo",
 		},
 		{
 			"data1",
-			search.Input{DataSourceID: 5, Genus: "Bubo", SpeciesAny: "bubo", Author: "L."},
+			search.Input{DataSourceIDs: []int{5}, Genus: "Bubo", SpeciesAny: "bubo", Author: "L."},
 			"ds:5 g:Bubo asp:bubo au:L.",
 		},
 		{

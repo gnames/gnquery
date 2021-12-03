@@ -45,7 +45,7 @@ func Example() {
 	gnq := gnquery.New()
 	res := gnq.Parse(q)
 	fmt.Println(res.Query)
-	fmt.Println(res.DataSourceID)
+	fmt.Println(res.DataSourceIDs)
 	fmt.Println(res.ParentTaxon)
 	fmt.Println(res.Genus)
 	fmt.Println(res.SpeciesAny)
@@ -53,7 +53,7 @@ func Example() {
 	fmt.Println(res.Tail)
 	// Output:
 	// ds:2 tx:Aves g:Bubo asp:bubo y:1758
-	// 2
+	// [2]
 	// Aves
 	// Bubo
 	// bubo

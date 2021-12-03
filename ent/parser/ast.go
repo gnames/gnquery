@@ -56,8 +56,8 @@ func (p *parser) newElement(n *node32) {
 		p.setElement(tag.Author, val)
 	case ruleYear:
 		p.setElement(tag.Year, val)
-	case ruleDataSource:
-		p.setElement(tag.DataSourceID, val)
+	case ruleDataSources:
+		p.setElement(tag.DataSourceIDs, val)
 	case ruleGenus:
 		p.setElement(tag.Genus, val)
 	case ruleNameString:

@@ -27,12 +27,11 @@ type Input struct {
 
 	// DataSourceID field contains data-source ID for ParentTaxon and
 	// serves as a preferred data-source in the final search results.
-	DataSourceID int `json:"dataSourceID,omitempty"`
+	DataSourceIDs []int `json:"dataSourceIds,omitempty"`
 
 	// ParentTaxon creates a filter to return only results that have the
-	// required taxon in their classification path. The field uses DataSourceID
-	// to get information which data-source to use. If none is set, it will
-	// use Catalogue of Life (ID = 1).
+	// required taxon in their classification path. The field uses the first
+	// ID from DataSourceIDs.
 	ParentTaxon string `json:"parentTaxon,omitempty"`
 
 	// NameString is a convenience field. It allows to provide faceted search
@@ -85,7 +84,7 @@ type Input struct {
 
 	// Tail field keeps a non-parsed pard of a query, in case if full parsing
 	// of query string did fail.
-	Tail string `json:"tail,omitempty"`
+	Tail string `json:"unparsedTail,omitempty"`
 }
 
 // YearRange field creates a more flexible filter for year data.
@@ -148,12 +147,16 @@ func (inp Input) ToQuery() string {
 	qSlice := make([]string, 0, 9)
 
 	var ds string
-	if val := strconv.Itoa(inp.DataSourceID); val != "0" {
-		ds = val
+	if len(inp.DataSourceIDs) > 0 {
+		ints := make([]string, len(inp.DataSourceIDs))
+		for i := range inp.DataSourceIDs {
+			ints[i] = strconv.Itoa(inp.DataSourceIDs[i])
+		}
+		ds = strings.Join(ints, ",")
 	}
 
 	data1 := []qTags{
-		{tag.DataSourceID, ds},
+		{tag.DataSourceIDs, ds},
 		{tag.ParentTaxon, inp.ParentTaxon},
 		{tag.NameString, inp.NameString},
 		{tag.AllResults, strconv.FormatBool(inp.WithAllResults)},

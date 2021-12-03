@@ -9,14 +9,14 @@ Tail <- (_ .*)?
 
 Components <- Element (_ Element)*
 
-Element <- (TagString String / TagDS Number /
-  TagYear (YearRange / YearNum) / TagAllResults Bool / TagWord Word)
+Element <- TagString String / TagDS Number (',' Number)* /
+  TagYear (YearRange / YearNum) / TagAllResults Bool / TagWord Word
 
 TagAllResults <- AllResults ':'
 
 TagString <- NameString ':'
 
-TagDS <- DataSource  ':'
+TagDS <- DataSources  ':'
 
 TagYear <- Year ':'
 
@@ -25,7 +25,7 @@ TagWord <- (Author / Genus / ParentTaxon / SpeciesAny / Species /
 
 Author <- 'au'
 
-DataSource <- 'ds'
+DataSources <- 'ds'
 
 AllResults <- 'all'
 

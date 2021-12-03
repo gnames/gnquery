@@ -10,7 +10,7 @@ type Tag int
 const (
 	AllResults Tag = iota
 	Author
-	DataSourceID
+	DataSourceIDs
 	ParentTaxon
 	Year
 	NameString
@@ -21,16 +21,16 @@ const (
 )
 
 var tagString = map[Tag]string{
-	AllResults:   "all",
-	Author:       "au",
-	DataSourceID: "ds",
-	ParentTaxon:  "tx",
-	Year:         "y",
-	NameString:   "n",
-	Genus:        "g",
-	Species:      "sp",
-	SpeciesAny:   "asp",
-	SpeciesInfra: "isp",
+	AllResults:    "all",
+	Author:        "au",
+	DataSourceIDs: "ds",
+	ParentTaxon:   "tx",
+	Year:          "y",
+	NameString:    "n",
+	Genus:         "g",
+	Species:       "sp",
+	SpeciesAny:    "asp",
+	SpeciesInfra:  "isp",
 }
 
 // String returns a string representation of a tag.

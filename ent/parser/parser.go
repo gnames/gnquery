@@ -63,13 +63,19 @@ func (p *parser) query() search.Input {
 		Warnings:       p.warnings,
 		NameString:     p.elements[tag.NameString],
 		Genus:          p.elements[tag.Genus],
-		ParentTaxon:    p.elements[tag.ParentTaxon],
 		Species:        p.elements[tag.Species],
 		SpeciesAny:     p.elements[tag.SpeciesAny],
 		SpeciesInfra:   p.elements[tag.SpeciesInfra],
 		Author:         p.elements[tag.Author],
+		ParentTaxon:    p.elements[tag.ParentTaxon],
+		DataSourceIDs:  processDataSources(p.elements[tag.DataSourceIDs]),
 		Tail:           p.tail,
 		WithAllResults: strings.HasPrefix(p.elements[tag.AllResults], "t"),
+	}
+
+	if res.ParentTaxon != "" && len(res.DataSourceIDs) > 1 {
+		res.Warnings = append(res.Warnings, "Parent taxon setting truncates data-sources to the first element.")
+		res.DataSourceIDs = []int{res.DataSourceIDs[0]}
 	}
 
 	if res.Tail != "" {
@@ -78,14 +84,6 @@ func (p *parser) query() search.Input {
 
 	if res.NameString != "" && (res.Genus+res.Species+res.SpeciesAny+res.SpeciesInfra != "") {
 		res.Warnings = append(res.Warnings, "If name-string is given, genus, species, author tags might be overwritten.")
-	}
-
-	dsStr := p.elements[tag.DataSourceID]
-	if ds, err := strconv.Atoi(p.elements[tag.DataSourceID]); err == nil {
-		res.DataSourceID = ds
-	} else if dsStr != "" {
-		warn = fmt.Sprintf("Cannot convert dataSourceId from '%s'", dsStr)
-		res.Warnings = append(res.Warnings, warn)
 	}
 
 	yrStr := p.elements[tag.Year]
@@ -120,4 +118,16 @@ func processYear(val string) (int, *search.YearRange) {
 
 	yr, _ = strconv.Atoi(val)
 	return yr, nil
+}
+
+func processDataSources(s string) []int {
+	if s == "" {
+		return nil
+	}
+	ids := strings.Split(s, ",")
+	res := make([]int, len(ids))
+	for i := range ids {
+		res[i], _ = strconv.Atoi(ids[i])
+	}
+	return res
 }

@@ -13,34 +13,37 @@ func TestDebug(t *testing.T) {
 }
 
 func TestParseQuery(t *testing.T) {
-	s := "n:Bubo bubo au:Linn. sp:caboom all:t ds:1"
+	s := "n:Bubo bubo au:Linn. sp:caboom all:t ds:1,2"
 	p := parser.New()
 	q := p.ParseQuery(s)
 	assert.True(t, len(q.Warnings) > 0, "warn")
 	assert.Equal(t, q.Query, "n:Bubo bubo au:Linn. sp:caboom all:t ds:1", "query")
 	assert.Equal(t, q.NameString, "Bubo bubo", "n")
 	assert.Equal(t, q.Species, "bubo", "sp")
-	assert.Equal(t, q.DataSourceID, 1, "ds")
+	assert.Equal(t, q.DataSourceIDs, []int{1, 2}, "ds")
 	assert.Equal(t, q.WithAllResults, true, "all")
 	assert.Equal(t, q.Author, "Linn.", "au")
 }
 
-func TestYearRange(t *testing.T) {
+func TestQueries(t *testing.T) {
 	tests := []struct {
 		msg, q string
 		warns  int
 		yst    int
 		yend   int
+		ds     []int
 		all    bool
 	}{
-		{"full range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, false},
-		{"range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, false},
-		{"greater", "g:B. sp:b. y:1888-", 0, 1888, 0, false},
-		{"less", "g:B. sp:b. y:-2000", 0, 0, 2000, false},
-		{"all", "g:B. sp:b. y:-2000 all:t", 0, 0, 2000, true},
-		{"all2", "g:B. sp:b. y:-2000 all:true", 0, 0, 2000, true},
-		{"best only", "g:B. sp:b. y:-2000 all:f", 0, 0, 2000, false},
-		{"best only", "g:B. sp:b. y:-2000 all:false", 0, 0, 2000, false},
+		{"full range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, []int{}, false},
+		{"range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, []int{}, false},
+		{"greater", "g:B. sp:b. y:1888-", 0, 1888, 0, []int{}, false},
+		{"less", "g:B. sp:b. y:-2000", 0, 0, 2000, []int{}, false},
+		{"all", "g:B. sp:b. y:-2000 all:t", 0, 0, 2000, []int{}, true},
+		{"all2", "g:B. sp:b. y:-2000 all:true", 0, 0, 2000, []int{}, true},
+		{"best only", "g:B. sp:b. y:-2000 all:f", 0, 0, 2000, []int{}, false},
+		{"best only", "g:B. sp:b. y:-2000 all:false", 0, 0, 2000, []int{}, false},
+		{"mult ds", "g:B. sp:b. ds:1,2,3 y:-2000 all:false", 0, 0, 2000, []int{1, 2, 3}, false},
+		{"single ds", "g:B. sp:b. ds:1 y:-2000 all:false", 0, 0, 2000, []int{1}, false},
 	}
 
 	p := parser.New()

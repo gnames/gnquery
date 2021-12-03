@@ -33,8 +33,8 @@ func (gnq gnquery) Process(inp search.Input) search.Input {
 	inp.WithAllResults = inp2.WithAllResults
 	inp.Warnings = inp2.Warnings
 
-	if inp2.DataSourceID > 0 {
-		inp.DataSourceID = inp2.DataSourceID
+	if len(inp2.DataSourceIDs) > 0 {
+		inp.DataSourceIDs = inp2.DataSourceIDs
 	}
 
 	if inp2.ParentTaxon != "" {
