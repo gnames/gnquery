@@ -73,11 +73,6 @@ func (p *parser) query() search.Input {
 		WithAllResults: strings.HasPrefix(p.elements[tag.AllResults], "t"),
 	}
 
-	if res.ParentTaxon != "" && len(res.DataSourceIDs) > 1 {
-		res.Warnings = append(res.Warnings, "Parent taxon setting truncates data-sources to the first element.")
-		res.DataSourceIDs = []int{res.DataSourceIDs[0]}
-	}
-
 	if res.Tail != "" {
 		res.Warnings = append(res.Warnings, "Unparsed tail")
 	}
