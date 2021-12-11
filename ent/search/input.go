@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/gnames/gnparser"
 	"github.com/gnames/gnparser/ent/parsed"
@@ -212,4 +213,31 @@ func (inp Input) dsToString() string {
 		res[i] = strconv.Itoa(inp.DataSourceIDs[i])
 	}
 	return strings.Join(res, ",")
+}
+
+// IsQuery is a very simple determination if a string looks like a
+// faceted search query. If the string starts with low-case letters following
+// a colon, the string is considered to be a query.
+//
+// Such a simple method is used, because neither scientific names or
+// files normally have such pattern at th start of their string.
+func IsQuery(s string) bool {
+	s = strings.TrimSpace(s)
+	idx := strings.Index(s, ":")
+	if idx == -1 {
+		return false
+	}
+
+	rs := []rune(s[0:idx])
+	for i := range rs {
+		if !unicode.IsLower(rs[i]) {
+			return false
+		}
+	}
+	rs = []rune(s[idx:])
+	if len(rs) < 2 {
+		return false
+	}
+
+	return unicode.IsLetter(rs[1]) || unicode.IsNumber(rs[1])
 }

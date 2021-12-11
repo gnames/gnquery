@@ -54,3 +54,24 @@ func TestToQuery(t *testing.T) {
 		assert.Equal(t, res, v.q)
 	}
 }
+
+func TestIsQuery(t *testing.T) {
+	tests := []struct {
+		msg, str string
+		query    bool
+	}{
+		{"query", "g:B.", true},
+		{"empty", "", false},
+		{"yr", "  y:1888 g:B.", true},
+		{"file", "c:\file", false},
+		{"file2", "C:\file", false},
+		{"file3", "g:\file", false},
+		{"weird", "g: ", false},
+		{"name", "Bubo bubo", false},
+	}
+	for _, v := range tests {
+		res := search.IsQuery(v.str)
+		assert.Equal(t, v.query, res)
+	}
+
+}
