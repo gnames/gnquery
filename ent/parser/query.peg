@@ -15,7 +15,7 @@ Element <- NameString NameVal / DataSources DSVal / Year YearVal /
   Author AuVal / ParentTaxon TaxonVal 
 
 
-NameVal <- GenusVal SpeciesVal SpeciesInfraVal? AuVal? YearVal?
+NameVal <- GenusVal _ SpeciesVal (_ SpeciesInfraVal)? (_ AuVal)? (_ YearVal)?
 
 DSVal <- Numbers
 
@@ -66,6 +66,7 @@ Numbers <- Number (',' Number)*
 Number <- [0-9]+
 
 Bool <- 'true' / 't' / 'false' / 'f'
+
 
 Digits <- [0-9]
 

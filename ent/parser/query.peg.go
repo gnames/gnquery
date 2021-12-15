@@ -578,7 +578,7 @@ func (p *engine) Init(options ...func(*engine) error) error {
 			position, tokenIndex = position14, tokenIndex14
 			return false
 		},
-		/* 4 NameVal <- <(GenusVal SpeciesVal SpeciesInfraVal? AuVal? YearVal?)> */
+		/* 4 NameVal <- <(GenusVal _ SpeciesVal (_ SpeciesInfraVal)? (_ AuVal)? (_ YearVal)?)> */
 		func() bool {
 			position26, tokenIndex26 := position, tokenIndex
 			{
@@ -586,11 +586,17 @@ func (p *engine) Init(options ...func(*engine) error) error {
 				if !_rules[ruleGenusVal]() {
 					goto l26
 				}
+				if !_rules[rule_]() {
+					goto l26
+				}
 				if !_rules[ruleSpeciesVal]() {
 					goto l26
 				}
 				{
 					position28, tokenIndex28 := position, tokenIndex
+					if !_rules[rule_]() {
+						goto l28
+					}
 					if !_rules[ruleSpeciesInfraVal]() {
 						goto l28
 					}
@@ -601,6 +607,9 @@ func (p *engine) Init(options ...func(*engine) error) error {
 			l29:
 				{
 					position30, tokenIndex30 := position, tokenIndex
+					if !_rules[rule_]() {
+						goto l30
+					}
 					if !_rules[ruleAuVal]() {
 						goto l30
 					}
@@ -611,6 +620,9 @@ func (p *engine) Init(options ...func(*engine) error) error {
 			l31:
 				{
 					position32, tokenIndex32 := position, tokenIndex
+					if !_rules[rule_]() {
+						goto l32
+					}
 					if !_rules[ruleYearVal]() {
 						goto l32
 					}

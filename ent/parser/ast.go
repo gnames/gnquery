@@ -46,9 +46,11 @@ func (p *parser) setElement(tag tag.Tag, val string) {
 }
 
 func (p *parser) newElement(n *node32) {
-	// n = n.up
 	tagNode := n.up
-	valNode := n.next
+	valNode := tagNode.next
+	if valNode == nil {
+		return
+	}
 	val := p.nodeString(valNode)
 
 	switch tagNode.pegRule {
@@ -60,8 +62,8 @@ func (p *parser) newElement(n *node32) {
 		p.setElement(tag.DataSourceIDs, val)
 	case ruleGenus:
 		p.setElement(tag.Genus, val)
-	// case ruleNameString:
-	// 	p.setElement(tag.NameString, val)
+	case ruleNameString:
+		p.setElement(tag.NameString, val)
 	case ruleParentTaxon:
 		p.setElement(tag.ParentTaxon, val)
 	case ruleSpecies:
