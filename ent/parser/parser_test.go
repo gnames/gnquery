@@ -17,13 +17,55 @@ func TestParseQuery(t *testing.T) {
 	p := parser.New()
 	q := p.ParseQuery(s)
 	assert.True(t, len(q.Warnings) > 0, "warn")
-	assert.Equal(t, q.Query, "n:Bubo bubo au:Linn. sp:caboom all:t ds:1,2", "query")
-	assert.Equal(t, q.NameString, "Bubo bubo", "n")
-	assert.Equal(t, q.Species, "bubo", "sp")
-	assert.Equal(t, q.ParentTaxon, "")
-	assert.Equal(t, q.DataSourceIDs, []int{1, 2}, "ds")
-	assert.Equal(t, q.WithAllResults, true, "all")
-	assert.Equal(t, q.Author, "Linn.", "au")
+	assert.Equal(t, "n:Bubo bubo au:Linn. sp:caboom all:t ds:1,2", q.Query, "query")
+	assert.Equal(t, "Bubo bubo", q.NameString, "n")
+	assert.Equal(t, "bubo", q.Species, "sp")
+	assert.Equal(t, "", q.ParentTaxon, "tx")
+	assert.Equal(t, []int{1, 2}, q.DataSourceIDs, "ds")
+	assert.Equal(t, true, q.WithAllResults, "all")
+	assert.Equal(t, "Linn.", q.Author, "au")
+}
+
+func TestNameString(t *testing.T) {
+	tests := []struct {
+		msg, q   string
+		warns    int
+		gen      string
+		sp       string
+		isp      string
+		au       string
+		yr       int
+		hasRange bool
+		yst      int
+		yend     int
+	}{
+		{"normal", "n:Bubo bubo Linn. 1756", 0, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0},
+		{"dupl sp", "n:Bubo bubo Linn. 1756 sp:alba", 1, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0},
+		{"dupl gen sp", "n:Bubo bubo Linn. 1756 g:Betula sp:alba", 2, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0},
+		{"au dupl", "n:Bubo bubo Linn. 1756 au:Kenth.", 1, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0},
+		{"no au", "n:Bubo bubo 1756 au:Kenth.", 0, "Bubo", "bubo", "", "Kenth.", 1756, false, 0, 0},
+		{"bad ord", "n:Bubo bubo 1756 Linn. au:Kenth.", 1, "Bubo", "bubo", "", "", 1756, false, 0, 0},
+		{"isp", "n:Bubo alba bubo Linn.", 0, "Bubo", "alba", "bubo", "Linn.", 0, false, 0, 0},
+		{"range", "n:Bubo bubo Linn. 1756-1777", 0, "Bubo", "bubo", "", "Linn.", 0, true, 1756, 1777},
+		{"range2", "n:Bubo bubo Linn. -1777", 0, "Bubo", "bubo", "", "Linn.", 0, true, 0, 1777},
+		{"range3", "n:Bubo bubo Linn. 1888-", 0, "Bubo", "bubo", "", "Linn.", 0, true, 1888, 0},
+	}
+
+	p := parser.New()
+	for _, v := range tests {
+		res := p.ParseQuery(v.q)
+		assert.Equal(t, v.q, res.Query, v.msg)
+		assert.True(t, len(res.Warnings) == v.warns, v.msg)
+		assert.Equal(t, v.gen, res.Genus, v.msg)
+		assert.Equal(t, v.sp, res.Species, v.msg)
+		assert.Equal(t, v.isp, res.SpeciesInfra, v.msg)
+		assert.Equal(t, v.au, res.Author, v.msg)
+		assert.Equal(t, v.yr, res.Year, v.msg)
+		if v.hasRange {
+			assert.Equal(t, v.yst, res.YearStart)
+			assert.Equal(t, v.yend, res.YearEnd)
+		}
+	}
 }
 
 func TestQueries(t *testing.T) {
@@ -52,11 +94,11 @@ func TestQueries(t *testing.T) {
 	for _, v := range tests {
 		res := p.ParseQuery(v.q)
 		assert.True(t, len(res.Warnings) == v.warns)
-		assert.Equal(t, res.WithAllResults, v.all)
-		assert.Equal(t, res.Year, 0)
+		assert.Equal(t, v.all, res.WithAllResults)
+		assert.Equal(t, 0, res.Year)
 		assert.NotNil(t, res.YearRange)
-		assert.Equal(t, res.YearStart, v.yst)
-		assert.Equal(t, res.YearEnd, v.yend)
+		assert.Equal(t, v.yst, res.YearStart)
+		assert.Equal(t, v.yend, res.YearEnd)
 	}
 
 	q := "g:B. sp:b. y:-"

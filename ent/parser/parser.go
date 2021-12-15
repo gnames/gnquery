@@ -11,16 +11,21 @@ import (
 )
 
 type parser struct {
-	elements map[tag.Tag]string
-	warnings []string
-	tail     string
+	elements     map[tag.Tag]string
+	nameElements map[tag.Tag]string
+	warnings     []string
+	tail         string
 	*engine
 }
 
 // New creates a new Parser object for converting a query string into
 // search.Input object.
 func New() Parser {
-	res := parser{engine: &engine{}, elements: make(map[tag.Tag]string)}
+	res := parser{
+		engine:       &engine{},
+		elements:     make(map[tag.Tag]string),
+		nameElements: make(map[tag.Tag]string),
+	}
 	res.Init()
 	return &res
 }
@@ -51,7 +56,9 @@ func (p *parser) Debug(q string) {
 }
 
 func (p *parser) resetFull() {
+	p.warnings = make([]string, 0)
 	p.elements = make(map[tag.Tag]string)
+	p.nameElements = make(map[tag.Tag]string)
 	p.tail = ""
 	p.reset()
 }
@@ -77,10 +84,6 @@ func (p *parser) query() search.Input {
 		res.Warnings = append(res.Warnings, "Unparsed tail")
 	}
 
-	if res.NameString != "" && (res.Genus+res.Species+res.SpeciesAny+res.SpeciesInfra != "") {
-		res.Warnings = append(res.Warnings, "If name-string is given, genus, species, author tags might be overwritten.")
-	}
-
 	yrStr := p.elements[tag.Year]
 	yr, yrRange := processYear(yrStr)
 
@@ -97,7 +100,7 @@ func (p *parser) query() search.Input {
 	res.Year = yr
 	res.YearRange = yrRange
 
-	return res.ProcessName()
+	return res
 }
 
 func processYear(val string) (int, *search.YearRange) {

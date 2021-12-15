@@ -6,8 +6,6 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/gnames/gnparser"
-	"github.com/gnames/gnparser/ent/parsed"
 	"github.com/gnames/gnquery/ent/tag"
 )
 
@@ -98,41 +96,6 @@ type YearRange struct {
 	// YearStart is the smaller year of the range.
 	// YearEnd is the larger year of the range.
 	YearStart, YearEnd int
-}
-
-// ProcessName checks if NameString is given in the Input object.
-// If yes, it cleans up redundant fields and populates data from a parsed
-// name-string.
-func (inp Input) ProcessName() Input {
-	if inp.NameString == "" {
-		return inp
-	}
-
-	cfg := gnparser.NewConfig(gnparser.OptWithDetails(true))
-	p := gnparser.New(cfg)
-	pRes := p.ParseName(inp.NameString)
-
-	if !pRes.Parsed {
-		inp.Warnings = append(inp.Warnings, "Cannot parse '%s'", inp.NameString)
-		return inp
-	}
-
-	for _, v := range pRes.Words {
-		val := v.Normalized
-		switch v.Type {
-		case parsed.GenusType:
-			inp.Genus = val
-		case parsed.SpEpithetType:
-			inp.Species = val
-		case parsed.InfraspEpithetType:
-			inp.SpeciesInfra = val
-		case parsed.AuthorWordType:
-			inp.Author = val
-		case parsed.YearType:
-			inp.Year, _ = strconv.Atoi(val)
-		}
-	}
-	return inp
 }
 
 type qTags struct {

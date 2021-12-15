@@ -23,6 +23,9 @@ func (p *parser) newQuery(n *node32) {
 		}
 		n = n.next
 	}
+	for k, v := range p.nameElements {
+		p.setElement(k, v)
+	}
 }
 
 func (p *parser) newComponents(n *node32) {
@@ -46,12 +49,13 @@ func (p *parser) setElement(tag tag.Tag, val string) {
 }
 
 func (p *parser) newElement(n *node32) {
-	n = n.up
 	tagNode := n.up
-	valNode := n.next
+	valNode := tagNode.next
 	val := p.nodeString(valNode)
-
 	switch tagNode.pegRule {
+	case ruleNameString:
+		p.setElement(tag.NameString, val)
+		p.newNameString(tagNode)
 	case ruleAuthor:
 		p.setElement(tag.Author, val)
 	case ruleYear:
@@ -60,8 +64,6 @@ func (p *parser) newElement(n *node32) {
 		p.setElement(tag.DataSourceIDs, val)
 	case ruleGenus:
 		p.setElement(tag.Genus, val)
-	case ruleNameString:
-		p.setElement(tag.NameString, val)
 	case ruleParentTaxon:
 		p.setElement(tag.ParentTaxon, val)
 	case ruleSpecies:
@@ -72,6 +74,26 @@ func (p *parser) newElement(n *node32) {
 		p.setElement(tag.SpeciesInfra, val)
 	case ruleAllResults:
 		p.setElement(tag.AllResults, val)
+	}
+}
+
+func (p *parser) newNameString(n *node32) {
+	n = n.next.up
+	for n != nil {
+		val := p.nodeString(n)
+		switch n.pegRule {
+		case ruleAuVal:
+			p.nameElements[tag.Author] = val
+		case ruleYearVal:
+			p.nameElements[tag.Year] = val
+		case ruleGenusVal:
+			p.nameElements[tag.Genus] = val
+		case ruleSpeciesVal:
+			p.nameElements[tag.Species] = val
+		case ruleSpeciesInfraVal:
+			p.nameElements[tag.SpeciesInfra] = val
+		}
+		n = n.next
 	}
 }
 
