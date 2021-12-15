@@ -9,41 +9,53 @@ Tail <- (_ .*)?
 
 Components <- Element (_ Element)*
 
-Element <- TagString String / TagDS Numbers /
-  TagYear (YearRange / YearNum) / TagAllResults Bool / TagWord Word
+Element <- NameString NameVal / DataSources DSVal / Year YearVal /
+  AllResults AllVal / Genus GenusVal / Species SpeciesVal /
+  SpeciesInfra SpeciesInfraVal /SpeciesAny SpeciesAnyVal /
+  Author AuVal / ParentTaxon TaxonVal 
 
-TagAllResults <- AllResults ':'
 
-TagString <- NameString ':'
+NameVal <- GenusVal SpeciesVal SpeciesInfraVal? AuVal? YearVal?
 
-TagDS <- DataSources  ':'
+DSVal <- Numbers
 
-TagYear <- Year ':'
+AllVal <- Bool
 
-TagWord <- (Author / Genus / ParentTaxon / SpeciesAny / Species /
-  SpeciesInfra) ':'
+SpeciesAnyVal <- Word
 
-Author <- 'au'
+SpeciesInfraVal <- Word
 
-DataSources <- 'ds'
+SpeciesVal <- Word
 
-AllResults <- 'all'
+TaxonVal <- CapsWord
 
-Genus <- 'gen' / 'g'
+AuVal <- CapsWord
 
-NameString <- 'n'
+GenusVal <- CapsWord
 
-ParentTaxon <- 'tx'
+YearVal <- YearRange / YearNum
 
-Species <- 'sp'
 
-SpeciesAny <- 'asp'
+Author <- 'au:'
 
-SpeciesInfra <- 'isp'
+DataSources <- 'ds:'
 
-Year <- 'yr' / 'y'
+AllResults <- 'all:'
 
-String <- Word (_ Word)*
+Genus <- 'gen:' / 'g:'
+
+NameString <- 'n:'
+
+ParentTaxon <- 'tx:'
+
+Species <- 'sp:'
+
+SpeciesAny <- 'asp:'
+
+SpeciesInfra <- 'isp:'
+
+Year <- 'yr:' / 'y:'
+
 
 YearRange <- '-' YearNum / YearNum '-' YearNum?
 
@@ -57,7 +69,9 @@ Bool <- 'true' / 't' / 'false' / 'f'
 
 Digits <- [0-9]
 
-Word <- [^: ]+ &(_ / END)
+CapsWord <- [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑŒÒÓÔÕÖØÙÚÛÜÝĆČĎİĶĹĺĽľŁłŅŌŐŒŘŚŜŞŠŸŹŻŽƒǾȘȚ] Word
+
+Word <- [^A-Z][^: ]+ &(_ / END)
 
 _ <- MultipleSpace / SingleSpace
 
