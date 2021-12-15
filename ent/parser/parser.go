@@ -22,6 +22,7 @@ type parser struct {
 // search.Input object.
 func New() Parser {
 	res := parser{
+		warnings:     make([]string, 0),
 		engine:       &engine{},
 		elements:     make(map[tag.Tag]string),
 		nameElements: make(map[tag.Tag]string),

@@ -7,15 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestProcessName(t *testing.T) {
-	inp := search.Input{NameString: "H. sapiens", Genus: "Pomatomus", Author: "L."}
-
-	inp = inp.ProcessName()
-	assert.Equal(t, inp.Author, "L.")
-	assert.Equal(t, inp.Genus, "H.")
-	assert.Equal(t, inp.Species, "sapiens")
-}
-
 func TestToQuery(t *testing.T) {
 	tests := []struct {
 		msg string

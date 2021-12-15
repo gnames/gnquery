@@ -31,6 +31,7 @@ func TestProcess(t *testing.T) {
 	res = gnq.Process(inp)
 	val = search.Input{
 		Query:          "n:Puma concolor au:Linn. all:t",
+		Warnings:       []string{},
 		NameString:     "Puma concolor",
 		Genus:          "Puma",
 		Species:        "concolor",
