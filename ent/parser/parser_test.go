@@ -38,17 +38,19 @@ func TestNameString(t *testing.T) {
 		hasRange bool
 		yst      int
 		yend     int
+		tail     string
 	}{
-		{"normal", "n:Bubo bubo Linn. 1756", 0, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0},
-		{"dupl sp", "n:Bubo bubo Linn. 1756 sp:alba", 1, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0},
-		{"dupl gen sp", "n:Bubo bubo Linn. 1756 g:Betula sp:alba", 2, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0},
-		{"au dupl", "n:Bubo bubo Linn. 1756 au:Kenth.", 1, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0},
-		{"no au", "n:Bubo bubo 1756 au:Kenth.", 0, "Bubo", "bubo", "", "Kenth.", 1756, false, 0, 0},
-		{"bad ord", "n:Bubo bubo 1756 Linn. au:Kenth.", 1, "Bubo", "bubo", "", "", 1756, false, 0, 0},
-		{"isp", "n:Bubo alba bubo Linn.", 0, "Bubo", "alba", "bubo", "Linn.", 0, false, 0, 0},
-		{"range", "n:Bubo bubo Linn. 1756-1777", 0, "Bubo", "bubo", "", "Linn.", 0, true, 1756, 1777},
-		{"range2", "n:Bubo bubo Linn. -1777", 0, "Bubo", "bubo", "", "Linn.", 0, true, 0, 1777},
-		{"range3", "n:Bubo bubo Linn. 1888-", 0, "Bubo", "bubo", "", "Linn.", 0, true, 1888, 0},
+		{"normal", "n:Bubo bubo Linn. 1756", 0, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0, ""},
+		{"dupl sp", "n:Bubo bubo Linn. 1756 sp:alba", 1, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0, ""},
+		{"dupl gen sp", "n:Bubo bubo Linn. 1756 g:Betula sp:alba", 2, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0, ""},
+		{"au dupl", "n:Bubo bubo Linn. 1756 au:Kenth.", 1, "Bubo", "bubo", "", "Linn.", 1756, false, 0, 0, ""},
+		{"au 1char", "n:Bubo bubo L 1756", 0, "Bubo", "bubo", "", "L", 1756, false, 0, 0, ""},
+		{"no au", "n:Bubo bubo 1756 au:Kenth.", 0, "Bubo", "bubo", "", "Kenth.", 1756, false, 0, 0, ""},
+		{"bad ord", "n:Bubo bubo 1756 Linn. au:Kenth.", 1, "Bubo", "bubo", "", "", 1756, false, 0, 0, ""},
+		{"isp", "n:Bubo alba bubo Linn.", 0, "Bubo", "alba", "bubo", "Linn.", 0, false, 0, 0, ""},
+		{"range", "n:Bubo bubo Linn. 1756-1777", 0, "Bubo", "bubo", "", "Linn.", 0, true, 1756, 1777, ""},
+		{"range2", "n:Bubo bubo Linn. -1777", 0, "Bubo", "bubo", "", "Linn.", 0, true, 0, 1777, ""},
+		{"range3", "n:Bubo bubo Linn. 1888-", 0, "Bubo", "bubo", "", "Linn.", 0, true, 1888, 0, ""},
 	}
 
 	p := parser.New()

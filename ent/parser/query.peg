@@ -27,11 +27,11 @@ SpeciesInfraVal <- Word
 
 SpeciesVal <- Word
 
-TaxonVal <- CapsWord
+TaxonVal <- Caps Word
 
-AuVal <- CapsWord
+AuVal <- Caps Word?
 
-GenusVal <- CapsWord
+GenusVal <- Caps Word
 
 YearVal <- YearRange / YearNum
 
@@ -70,7 +70,7 @@ Bool <- 'true' / 't' / 'false' / 'f'
 
 Digits <- [0-9]
 
-CapsWord <- [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑŒÒÓÔÕÖØÙÚÛÜÝĆČĎİĶĹĺĽľŁłŅŌŐŒŘŚŜŞŠŸŹŻŽƒǾȘȚ] Word
+Caps <- [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑŒÒÓÔÕÖØÙÚÛÜÝĆČĎİĶĹĺĽľŁłŅŌŐŒŘŚŜŞŠŸŹŻŽƒǾȘȚ]
 
 Word <- [^A-Z1-9\-: ][^1-9: ]* &(_ / END)
 
