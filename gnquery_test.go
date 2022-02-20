@@ -36,7 +36,7 @@ func TestProcess(t *testing.T) {
 		Genus:          "Puma",
 		Species:        "concolor",
 		Author:         "Linn.",
-		WithAllResults: true,
+		WithAllMatches: true,
 	}
 	assert.Equal(t, res, val)
 }
@@ -46,7 +46,7 @@ func Example() {
 	gnq := gnquery.New()
 	res := gnq.Parse(q)
 	fmt.Println(res.Query)
-	fmt.Println(res.DataSourceIDs)
+	fmt.Println(res.DataSources)
 	fmt.Println(res.ParentTaxon)
 	fmt.Println(res.Genus)
 	fmt.Println(res.SpeciesAny)

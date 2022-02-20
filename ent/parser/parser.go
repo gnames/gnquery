@@ -76,9 +76,9 @@ func (p *parser) query() search.Input {
 		SpeciesInfra:   p.elements[tag.SpeciesInfra],
 		Author:         p.elements[tag.Author],
 		ParentTaxon:    p.elements[tag.ParentTaxon],
-		DataSourceIDs:  processDataSources(p.elements[tag.DataSourceIDs]),
+		DataSources:    processDataSources(p.elements[tag.DataSourceIDs]),
 		Tail:           p.tail,
-		WithAllResults: strings.HasPrefix(p.elements[tag.AllResults], "t"),
+		WithAllMatches: strings.HasPrefix(p.elements[tag.AllResults], "t"),
 	}
 
 	if res.Tail != "" {
