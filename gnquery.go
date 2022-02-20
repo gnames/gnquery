@@ -30,11 +30,11 @@ func (gnq gnquery) Process(inp search.Input) search.Input {
 	}
 
 	inp2 := gnq.ParseQuery(inp.Query)
-	inp.WithAllResults = inp2.WithAllResults
+	inp.WithAllMatches = inp2.WithAllMatches
 	inp.Warnings = inp2.Warnings
 
-	if len(inp2.DataSourceIDs) > 0 {
-		inp.DataSourceIDs = inp2.DataSourceIDs
+	if len(inp2.DataSources) > 0 {
+		inp.DataSources = inp2.DataSources
 	}
 
 	if inp2.ParentTaxon != "" {

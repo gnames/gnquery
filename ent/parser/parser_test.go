@@ -21,8 +21,8 @@ func TestParseQuery(t *testing.T) {
 	assert.Equal(t, "Bubo bubo", q.NameString, "n")
 	assert.Equal(t, "bubo", q.Species, "sp")
 	assert.Equal(t, "", q.ParentTaxon, "tx")
-	assert.Equal(t, []int{1, 2}, q.DataSourceIDs, "ds")
-	assert.Equal(t, true, q.WithAllResults, "all")
+	assert.Equal(t, []int{1, 2}, q.DataSources, "ds")
+	assert.Equal(t, true, q.WithAllMatches, "all")
 	assert.Equal(t, "Linn.", q.Author, "au")
 }
 
@@ -79,16 +79,18 @@ func TestQueries(t *testing.T) {
 		ds     []int
 		all    bool
 	}{
-		{"full range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, []int{}, false},
-		{"range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, []int{}, false},
-		{"greater", "g:B. sp:b. y:1888-", 0, 1888, 0, []int{}, false},
-		{"less", "g:B. sp:b. y:-2000", 0, 0, 2000, []int{}, false},
-		{"all", "g:B. sp:b. y:-2000 all:t", 0, 0, 2000, []int{}, true},
-		{"all2", "g:B. sp:b. y:-2000 all:true", 0, 0, 2000, []int{}, true},
-		{"best only", "g:B. sp:b. y:-2000 all:f", 0, 0, 2000, []int{}, false},
-		{"best only", "g:B. sp:b. y:-2000 all:false", 0, 0, 2000, []int{}, false},
+		{"full range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, nil, false},
+		{"range", "g:B. sp:b. y:1888-2000", 0, 1888, 2000, nil, false},
+		{"greater", "g:B. sp:b. y:1888-", 0, 1888, 0, nil, false},
+		{"less", "g:B. sp:b. y:-2000", 0, 0, 2000, nil, false},
+		{"all", "g:B. sp:b. y:-2000 all:t", 0, 0, 2000, nil, true},
+		{"all2", "g:B. sp:b. y:-2000 all:true", 0, 0, 2000, nil, true},
+		{"best only", "g:B. sp:b. y:-2000 all:f", 0, 0, 2000, nil, false},
+		{"best only", "g:B. sp:b. y:-2000 all:false", 0, 0, 2000, nil, false},
 		{"mult ds", "g:B. sp:b. ds:1,2,3 y:-2000 all:false", 0, 0, 2000, []int{1, 2, 3}, false},
 		{"single ds", "g:B. sp:b. ds:1 y:-2000 all:false", 0, 0, 2000, []int{1}, false},
+		{"single ds", "g:B. sp:b. ds:0 y:-2000 all:false", 0, 0, 2000, []int{0}, false},
+		{"single ds", "g:B. sp:b. ds:0 y:-2000 all:t", 0, 0, 2000, []int{0}, true},
 	}
 
 	p := parser.New()
@@ -96,11 +98,13 @@ func TestQueries(t *testing.T) {
 	for _, v := range tests {
 		res := p.ParseQuery(v.q)
 		assert.True(t, len(res.Warnings) == v.warns)
-		assert.Equal(t, v.all, res.WithAllResults)
+		assert.Equal(t, v.all, res.WithAllMatches)
 		assert.Equal(t, 0, res.Year)
 		assert.NotNil(t, res.YearRange)
 		assert.Equal(t, v.yst, res.YearStart)
 		assert.Equal(t, v.yend, res.YearEnd)
+		assert.Equal(t, v.ds, res.DataSources)
+		assert.Equal(t, v.all, res.WithAllMatches)
 	}
 
 	q := "g:B. sp:b. y:-"
