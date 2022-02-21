@@ -34,7 +34,7 @@ const (
 	ruleYearVal
 	ruleAuthor
 	ruleDataSources
-	ruleAllResults
+	ruleAllMatches
 	ruleGenus
 	ruleNameString
 	ruleParentTaxon
@@ -74,7 +74,7 @@ var rul3s = [...]string{
 	"YearVal",
 	"Author",
 	"DataSources",
-	"AllResults",
+	"AllMatches",
 	"Genus",
 	"NameString",
 	"ParentTaxon",
@@ -475,7 +475,7 @@ func (p *engine) Init(options ...func(*engine) error) error {
 			position, tokenIndex = position10, tokenIndex10
 			return false
 		},
-		/* 3 Element <- <((NameString NameVal) / (DataSources DSVal) / (Year YearVal) / (AllResults AllVal) / (Genus GenusVal) / (Species SpeciesVal) / (SpeciesInfra SpeciesInfraVal) / (SpeciesAny SpeciesAnyVal) / (Author AuVal) / (ParentTaxon TaxonVal))> */
+		/* 3 Element <- <((NameString NameVal) / (DataSources DSVal) / (Year YearVal) / (AllMatches AllVal) / (Genus GenusVal) / (Species SpeciesVal) / (SpeciesInfra SpeciesInfraVal) / (SpeciesAny SpeciesAnyVal) / (Author AuVal) / (ParentTaxon TaxonVal))> */
 		func() bool {
 			position14, tokenIndex14 := position, tokenIndex
 			{
@@ -509,7 +509,7 @@ func (p *engine) Init(options ...func(*engine) error) error {
 					goto l16
 				l19:
 					position, tokenIndex = position16, tokenIndex16
-					if !_rules[ruleAllResults]() {
+					if !_rules[ruleAllMatches]() {
 						goto l20
 					}
 					if !_rules[ruleAllVal]() {
@@ -847,7 +847,7 @@ func (p *engine) Init(options ...func(*engine) error) error {
 			position, tokenIndex = position58, tokenIndex58
 			return false
 		},
-		/* 16 AllResults <- <('a' 'l' 'l' ':')> */
+		/* 16 AllMatches <- <('a' 'l' 'l' ':')> */
 		func() bool {
 			position60, tokenIndex60 := position, tokenIndex
 			{
@@ -868,7 +868,7 @@ func (p *engine) Init(options ...func(*engine) error) error {
 					goto l60
 				}
 				position++
-				add(ruleAllResults, position61)
+				add(ruleAllMatches, position61)
 			}
 			return true
 		l60:

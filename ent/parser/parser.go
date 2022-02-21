@@ -78,7 +78,7 @@ func (p *parser) query() search.Input {
 		ParentTaxon:    p.elements[tag.ParentTaxon],
 		DataSources:    processDataSources(p.elements[tag.DataSourceIDs]),
 		Tail:           p.tail,
-		WithAllMatches: strings.HasPrefix(p.elements[tag.AllResults], "t"),
+		WithAllMatches: strings.HasPrefix(p.elements[tag.AllMatches], "t"),
 	}
 
 	if res.Tail != "" {

@@ -23,6 +23,7 @@ func (gnq gnquery) Parse(q string) search.Input {
 	return gnq.ParseQuery(q)
 }
 
+// Process appends Input with data received from the query after its parsing.
 func (gnq gnquery) Process(inp search.Input) search.Input {
 	if inp.Query == "" {
 		inp.Query = inp.ToQuery()

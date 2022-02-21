@@ -16,7 +16,7 @@ func TestToQuery(t *testing.T) {
 		{
 			"with query",
 			search.Input{Query: "some query", DataSources: []int{5}, NameString: "Bubo bubo"},
-			"some query",
+			"ds:5 n:Bubo bubo",
 		},
 		{
 			"with all res",

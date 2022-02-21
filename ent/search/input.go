@@ -103,18 +103,15 @@ type qTags struct {
 	val string
 }
 
+// ToQuery creates a query from the Input data.
 func (inp Input) ToQuery() string {
-	if inp.Query != "" {
-		return inp.Query
-	}
-
 	qSlice := make([]string, 0, 9)
 
 	data1 := []qTags{
 		{tag.DataSourceIDs, inp.dsToString()},
 		{tag.ParentTaxon, inp.ParentTaxon},
 		{tag.NameString, inp.NameString},
-		{tag.AllResults, strconv.FormatBool(inp.WithAllMatches)},
+		{tag.AllMatches, strconv.FormatBool(inp.WithAllMatches)},
 	}
 
 	qSlice = processTags(qSlice, data1)

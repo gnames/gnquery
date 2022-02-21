@@ -10,7 +10,7 @@ Tail <- (_ .*)?
 Components <- Element (_ Element)*
 
 Element <- NameString NameVal / DataSources DSVal / Year YearVal /
-  AllResults AllVal / Genus GenusVal / Species SpeciesVal /
+  AllMatches AllVal / Genus GenusVal / Species SpeciesVal /
   SpeciesInfra SpeciesInfraVal /SpeciesAny SpeciesAnyVal /
   Author AuVal / ParentTaxon TaxonVal 
 
@@ -40,7 +40,7 @@ Author <- 'au:'
 
 DataSources <- 'ds:'
 
-AllResults <- 'all:'
+AllMatches <- 'all:'
 
 Genus <- 'gen:' / 'g:'
 
