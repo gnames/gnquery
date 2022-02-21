@@ -164,10 +164,6 @@ func (inp Input) dsToString() string {
 		return ""
 	}
 
-	if inp.ParentTaxon != "" {
-		return strconv.Itoa(inp.DataSources[0])
-	}
-
 	res := make([]string, len(inp.DataSources))
 	for i := range inp.DataSources {
 		res[i] = strconv.Itoa(inp.DataSources[i])

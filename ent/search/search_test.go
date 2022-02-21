@@ -15,13 +15,18 @@ func TestToQuery(t *testing.T) {
 	}{
 		{
 			"with query",
-			search.Input{Query: "some query", DataSources: []int{5}, NameString: "Bubo bubo"},
-			"ds:5 n:Bubo bubo",
+			search.Input{Query: "some query", DataSources: []int{5, 4}, NameString: "Bubo bubo"},
+			"ds:5,4 n:Bubo bubo",
+		},
+		{
+			"with query",
+			search.Input{Query: "some query", DataSources: []int{5, 4}, NameString: "Bubo bubo"},
+			"ds:5,4 n:Bubo bubo",
 		},
 		{
 			"with all res",
-			search.Input{DataSources: []int{5}, NameString: "Bubo bubo", WithAllMatches: true},
-			"ds:5 n:Bubo bubo all:true",
+			search.Input{DataSources: []int{5,4}, NameString: "Bubo bubo", WithAllMatches: true},
+			"ds:5,4 n:Bubo bubo all:true",
 		},
 		{
 			"with name string",
