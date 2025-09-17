@@ -24,6 +24,9 @@ func (gnq gnquery) Parse(q string) search.Input {
 }
 
 // Process appends Input with data received from the query after its parsing.
+// It takes an existing Input and parses its Query field to extract additional
+// search parameters, merging them with the original Input while preserving
+// non-empty values from the parsed query.
 func (gnq gnquery) Process(inp search.Input) search.Input {
 	if inp.Query == "" {
 		inp.Query = inp.ToQuery()
@@ -32,6 +35,7 @@ func (gnq gnquery) Process(inp search.Input) search.Input {
 
 	inp2 := gnq.ParseQuery(inp.Query)
 	inp.WithAllMatches = inp2.WithAllMatches
+	inp.WithAllBestResults = inp2.WithAllBestResults
 	inp.Warnings = inp2.Warnings
 
 	if len(inp2.DataSources) > 0 {

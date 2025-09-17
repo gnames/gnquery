@@ -25,8 +25,27 @@ func TestToQuery(t *testing.T) {
 		},
 		{
 			"with all res",
-			search.Input{DataSources: []int{5,4}, NameString: "Bubo bubo", WithAllMatches: true},
+			search.Input{DataSources: []int{5, 4}, NameString: "Bubo bubo", WithAllMatches: true},
 			"ds:5,4 n:Bubo bubo all:true",
+		},
+		{
+			"with all res all best",
+			search.Input{
+				DataSources:        []int{5, 4},
+				NameString:         "Bubo bubo",
+				WithAllMatches:     true,
+				WithAllBestResults: true,
+			},
+			"ds:5,4 n:Bubo bubo all:true",
+		},
+		{
+			"with all best",
+			search.Input{
+				DataSources:        []int{5, 4},
+				NameString:         "Bubo bubo",
+				WithAllBestResults: true,
+			},
+			"ds:5,4 n:Bubo bubo abr:true",
 		},
 		{
 			"with name string",
@@ -40,14 +59,20 @@ func TestToQuery(t *testing.T) {
 		},
 		{
 			"data2",
-			search.Input{ParentTaxon: "Aves", Genus: "Bubo", SpeciesInfra: "bubo", Author: "L.", Year: 1888},
+			search.Input{
+				ParentTaxon:  "Aves",
+				Genus:        "Bubo",
+				SpeciesInfra: "bubo",
+				Author:       "L.",
+				Year:         1888,
+			},
 			"tx:Aves g:Bubo isp:bubo au:L. y:1888",
 		},
 	}
 
 	for _, v := range tests {
 		res := v.inp.ToQuery()
-		assert.Equal(t, res, v.q)
+		assert.Equal(t, v.q, res, v.msg)
 	}
 }
 

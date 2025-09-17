@@ -25,6 +25,10 @@ type Input struct {
 	// output, or only the "best result".
 	WithAllMatches bool `json:"withAllMatches,omitempty"`
 
+	// WithAllBestResults is true when user wants to return all highest
+	// score results, instead of the first of them.
+	WithAllBestResults bool `json:"withAllBestResults,omitempty"`
+
 	// ParentTaxon creates a filter to return only results that have the
 	// required taxon in their classification path. The field uses the first
 	// ID from DataSourceIDs.
@@ -107,11 +111,17 @@ type qTags struct {
 func (inp Input) ToQuery() string {
 	qSlice := make([]string, 0, 9)
 
+	// ignore inp.WithAllBestResults if inp.WithAllMatches is true
+	if inp.WithAllMatches {
+		inp.WithAllBestResults = false
+	}
+
 	data1 := []qTags{
 		{tag.DataSourceIDs, inp.dsToString()},
 		{tag.ParentTaxon, inp.ParentTaxon},
 		{tag.NameString, inp.NameString},
 		{tag.AllMatches, strconv.FormatBool(inp.WithAllMatches)},
+		{tag.AllBestResults, strconv.FormatBool(inp.WithAllBestResults)},
 	}
 
 	qSlice = processTags(qSlice, data1)
@@ -149,6 +159,16 @@ func (inp Input) ToQuery() string {
 	return strings.Join(qSlice, " ")
 }
 
+// processTags converts qTags data into query string components and appends them
+// to the provided slice. It iterates through each tag-value pair, filtering out
+// empty values and "false" boolean strings, then formats valid entries as
+// "tag:value" strings for inclusion in the final search query.
+//
+// Parameters:
+//   - qSlice: existing slice of query string components
+//   - data: slice of qTags containing tag-value pairs to process
+//
+// Returns the updated qSlice with new "tag:value" components appended.
 func processTags(qSlice []string, data []qTags) []string {
 	for _, v := range data {
 		if v.val != "" && v.val != "false" {

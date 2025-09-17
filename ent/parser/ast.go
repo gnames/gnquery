@@ -74,6 +74,8 @@ func (p *parser) newElement(n *node32) {
 		p.setElement(tag.SpeciesInfra, val)
 	case ruleAllMatches:
 		p.setElement(tag.AllMatches, val)
+	case ruleAllBestResults:
+		p.setElement(tag.AllBestResults, val)
 	}
 }
 
