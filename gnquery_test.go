@@ -24,20 +24,19 @@ func TestProcess(t *testing.T) {
 	assert.Equal(t, res, val)
 
 	inp = search.Input{
-		Query:   "n:Puma concolor au:Linn. all:t abr:t",
+		Query:   "n:Puma concolor au:Linn. all:t",
 		Genus:   "P.",
 		Species: "saltator",
 	}
 	res = gnq.Process(inp)
 	val = search.Input{
-		Query:              "n:Puma concolor au:Linn. all:t abr:t",
-		Warnings:           []string{},
-		NameString:         "Puma concolor",
-		Genus:              "Puma",
-		Species:            "concolor",
-		Author:             "Linn.",
-		WithAllMatches:     true,
-		WithAllBestResults: true,
+		Query:          "n:Puma concolor au:Linn. all:t",
+		Warnings:       []string{},
+		NameString:     "Puma concolor",
+		Genus:          "Puma",
+		Species:        "concolor",
+		Author:         "Linn.",
+		WithAllMatches: true,
 	}
 	assert.Equal(t, res, val)
 }
